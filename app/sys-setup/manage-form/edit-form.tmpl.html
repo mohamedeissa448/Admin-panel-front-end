@@ -1,0 +1,26 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">Edit Form</h3>
+    <form name="vm.editFormForm" novalidate  ng-submit="vm.editFormForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Form Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Form.Form_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.Form.Form_Description"></textarea>
+        </md-input-container>
+        <md-switch class="md-primary" ng-model="vm.Form_IsActive" aria-label="Form Status" 
+            ng-init="switches.primary = false">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>Form Status
+        </md-switch>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

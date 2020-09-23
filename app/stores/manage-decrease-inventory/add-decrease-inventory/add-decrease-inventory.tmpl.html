@@ -1,0 +1,322 @@
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-toolbar">
+    <h3 class="center-text">Add New Decrease Inventory</h3>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="vm.CloseIncreaseInventory()">
+      <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+  <form name="vm.IncreaseInventoryForm" ng-submit=" vm.SubmitRequest()">
+    <div layout="row" layout-fill>
+      <div flex="50" flex-xs="100" layout="column" layout-padding>
+        <md-input-container flex="100" class="md-block">
+          <label translate="Select Decrease date"></label>
+          <md-datepicker
+            ng-model="vm.DecreaseInventory_Date"
+            flex="100"
+            flex-xs="100"
+            md-placeholder="Select Decrease Inventory date"
+            class="rxp-normal-date-piker-width"
+          >
+          </md-datepicker>
+        </md-input-container>
+      </div>
+      <div flex="50" flex-xs="100" layout="column" layout-padding>
+        <md-input-container class="md-block md-icon-left rxp-customer-chips">
+          <label>Note</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="text"  ng-model="vm.DecreaseInventory_Note" />    
+        </md-input-container>
+      </div>
+    </div>
+
+    <md-subheader class="md-no-sticky">Products</md-subheader>
+    <md-divider></md-divider>
+
+    <div
+      layout="row"
+      class="rxp-margin-top-medium hcm-contact-add-form"
+      layout-xs="column"
+    >
+      <div
+        flex="5"
+        class="rxp-icon-container"
+        flex-xs="100"
+        layout="column"
+        layout-padding
+      >
+        <md-icon md-font-icon="fa fa-dropbox"></md-icon>
+      </div>
+      <div flex="30" flex-xs="100" layout="column" class="">
+        <md-autocomplete
+          class="hcm-select-product-name-field"
+          md-items="productitem in vm.searchForproduct(vm.productsearchText)"
+          md-search-text="vm.productsearchText"
+          md-item-text="productitem.Product_Name"
+          md-selected-item="vm.selectedProduct"
+          md-no-cache="false"
+          md-floating-label="Enter Product Name"
+        >
+          <md-item-template>
+            <span md-highlight-text="vm.productsearchText"
+              >{{productitem.Product_Name || vm.productsearchText}}</span
+            >
+          </md-item-template>
+          <md-not-found>
+            No Product matching "{{vm.productsearchText}}" were found.
+          </md-not-found>
+        </md-autocomplete>
+      </div>
+      <div flex="5" flex-xs="100" layout="column" class=""></div>
+      <div flex="25" flex-xs="100" layout="column" style="height: 87px;margin-top: 1.1em;">
+        <md-input-container class="rxp-full-width">
+          <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+          <label class="rxp-margin-left-med">Origin Variants</label>
+          <md-select placeholder="Origin Variants" ng-model="vm.Origin_Variant" >
+              <md-select-header >
+                  <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Origin Variants List</span>
+              </md-select-header>
+              <md-option ng-repeat="x in vm.productOriginVariants" value="{{x}}">
+                  {{x.ProductOrigin_Name}}
+              </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div flex="10" flex-xs="100" layout="column" class=""></div>
+      <div flex="30" flex-xs="100" layout="column" class="">
+        <md-input-container class="md-block hcm-weight-name-field">
+          <label translate="Select Expiration date"></label>
+          <md-datepicker
+            ng-model="vm.Expiration_Variant"
+            flex="100"
+            flex-xs="100"
+            md-placeholder="Select Expiration date"
+            class="rxp-normal-date-piker-width"
+          >
+          </md-datepicker>
+        </md-input-container>
+      </div>
+      <div flex="25" flex-xs="100" layout="column" class="">
+        <md-input-container
+          md-no-float
+          class="md-block hcm-Amount-number-field"
+        >
+          <label>Quantity</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="number" ng-model="vm.Quantity" />
+        </md-input-container>
+      </div>
+      <div flex="25" flex-xs="100" layout="column" class="">
+        <md-input-container
+          md-no-float
+          class="md-block hcm-Amount-number-field"
+        >
+          <label>Cost</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="number" ng-model="vm.Cost" />
+        </md-input-container>
+      </div>
+      <div flex="25" flex-xs="100" layout="column" class="">
+        <md-input-container
+          md-no-float
+          class="md-block hcm-Amount-number-field"
+        >
+          <label>Price</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="number" ng-model="vm.Price" />
+        </md-input-container>
+      </div>
+      <div
+        flex="15"
+        flex-xs="100"
+        layout="column"
+        layout-align="end end"
+        class="hcm-add-product-btt-container"
+      >
+        <md-button
+          ng-click="vm.AddDecreaseInventoryProduct()"
+          class="md-primary md-raised"
+          md-ripple-size="auto"
+          aria-label="Submit"
+        >
+          <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+          <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+        </md-button>
+      </div>
+    </div>
+    <md-divider class="rxp-margin-top-larg"></md-divider>
+    <div
+      layout="row"
+      layout-xs="column"
+      class="hcm-contact-grid-header jsgrid-header-row"
+    >
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Product :
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Origin Variant :
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Expiration Date
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Quantity
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Cost
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Price
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div
+      layout="row"
+      layout-xs="column"
+      class="jsgrid-row"
+      ng-repeat="decreaseInventoryProduct in vm.DecreaseInventory_Products"
+    >
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{decreaseInventoryProduct.Product_Name}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{ decreaseInventoryProduct.ProductOrigin_Name }}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{decreaseInventoryProduct.Expiration_Variant | date:'dd MMMM yyyy'}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{decreaseInventoryProduct.Quantity}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{decreaseInventoryProduct.Cost}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{decreaseInventoryProduct.Price}}
+      </div>
+      <div class="jsgrid-cell" flex="10" flex-xs="50" layout="column">
+        <md-button
+          ng-click="vm.DeleteDecreaseInventoryProduct(productOrder)"
+          class="md-default hcm-ingrid-delete-btt"
+          md-ripple-size="auto"
+          aria-label="Delete Contact"
+        >
+          <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+        </md-button>
+      </div>
+    </div>
+    <md-divider class="rxp-field-divider"></md-divider>
+    <md-dialog-actions layout="row">
+      <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-button
+            ng-click="vm.CloseDecreaseInventory()"
+            class="md-default md-raised"
+            md-ripple-size="auto"
+            aria-label="Close Contact Form"
+          >
+            <md-icon md-font-icon="fa fa-times"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med"
+              >close</label
+            >
+          </md-button>
+        </div>
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-button
+            type="submit"
+            class="md-primary md-raised"
+            md-ripple-size="auto"
+            aria-label="Submit"
+          >
+            <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+            <label translate="Submit"></label>
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-content>

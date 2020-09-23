@@ -1,0 +1,212 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">add new Inventory Operation</h3>
+    <form name="vm.addInventoryOperationForm" novalidate  ng-submit="vm.addInventoryOperationForm.$valid && vm.SubmitData()">
+        
+        <md-input-container flex="100" class="md-block" style="margin-bottom: 0;width: 40%;">
+            <label translate="Select operation date"></label>
+            <md-datepicker
+              ng-model="vm.InventoryOperation.Inventory_Operation_Date"
+              flex="100"
+              flex-xs="100"
+              md-placeholder="Select operation date"
+              class="rxp-normal-date-piker-width"
+            >
+            </md-datepicker>
+        </md-input-container>
+
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Related To Company</label>
+            <md-select  placeholder="Related To Company"style="width:80%" ng-model="vm.InventoryOperation.InventoryOperation_Related_To_Company" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Companies List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.companies" value="{{x._id}}">
+                    {{x.Company_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Related To Branch</label>
+            <md-select  placeholder="Related To Branch"style="width:80%" ng-model="vm.InventoryOperation.InventoryOperation_Related_To_Branch" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Branches List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.branches" value="{{x._id}}">
+                    {{x.Branch_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Related To Inventory</label>
+            <md-select  placeholder="Related To Inventory"style="width:80%" ng-model="vm.InventoryOperation.Inventory_Operation_Related_To_Inventory" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Inventories List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.inventories" value="{{x._id}}">
+                    {{x.Inventory_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Info</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <textarea  ng-model="vm.InventoryOperation.Inventory_Operation_Info" rows="3" required></textarea>
+        </md-input-container>
+        <!-- start list of products -->
+        <div
+    layout="row"
+    class="rxp-margin-top-medium hcm-contact-add-form"
+    layout-xs="column"
+  >
+    <div flex="80" flex-xs="100" layout="column" class="">
+      <md-input-container class="md-block md-icon-left">
+        <md-icon
+          md-font-icon="zmdi zmdi-accounts-alt"
+          class="chips-icon"
+        ></md-icon>
+        <label>Select Product</label>
+        <md-chips
+          ng-model="vm.selectedProducts"
+          md-autocomplete-snap
+          md-transform-chip="vm.transformChip($chip)"
+          md-require-match="true"
+          min-items="1"
+          ng-required="true"
+        >
+          <md-autocomplete
+            md-selected-item="vm.selectedProductItem"
+            md-search-text="vm.searchProductText"
+            md-items="productitem in vm.queryProducts(vm.searchProductText)"
+            md-item-text="productitem.Product_Name"
+            placeholder="Product"
+          >
+            <span md-highlight-text="vm.searchCustomerText"
+              >{{productitem.Product_Name}}</span
+            >
+          </md-autocomplete>
+          <md-chip-template>
+            <span>
+              <strong>{{$chip.Product_Name}}</strong>
+              <em class="rxp-chip-subtitle">code: ({{$chip.Product_Code}})</em>
+            </span>
+          </md-chip-template>
+        </md-chips>
+      </md-input-container>
+    </div>
+    <div
+      flex="20"
+      flex-xs="100"
+      layout="column"
+      layout-align="end end"
+      class="hcm-add-contact-btt-container"
+    >
+      <md-button
+        ng-click="vm.AddProduct()"
+        class="md-primary md-raised"
+        md-ripple-size="auto"
+        aria-label="Submit"
+      >
+        <md-icon md-font-icon="fa fa-arrow-down"></md-icon>
+        <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+      </md-button>
+    </div>
+  </div>
+  <md-divider class="rxp-margin-top-larg"></md-divider>
+  <div
+    layout="row"
+    layout-xs="column"
+    class="hcm-contact-grid-header jsgrid-header-row"
+  >
+    <div
+      class="jsgrid-header-cell"
+      flex="25"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      Product Code
+    </div>
+    <div
+      class="jsgrid-header-cell"
+      flex="70"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      Product Name
+    </div>
+    <div
+      class="jsgrid-header-cell"
+      flex="5"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    ></div>
+  </div>
+  <md-divider></md-divider>
+  <span class="md-body-2 hcm-contact-no-data" ng-if="vm.Products.length==0"
+    >No Products Data Inserted</span
+  >
+  <div
+    layout="row"
+    layout-xs="column"
+    class="jsgrid-row"
+    ng-repeat="product in vm.Products"
+  >
+    <div
+      class="jsgrid-cell"
+      flex="25"
+      flex-xs="30"
+      layout="column"
+      layout-align="center start"
+    >
+      {{::product.Product_Code}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="70"
+      flex-xs="75"
+      layout="column"
+      layout-align="center start"
+    >
+      {{::product.Product_Name}}
+    </div>
+    <div class="jsgrid-cell" flex="5" flex-xs="50" layout="column">
+      <md-button
+        ng-click="vm.DeleteProduct(product)"
+        class="md-default hcm-ingrid-delete-btt"
+        md-ripple-size="auto"
+        aria-label="Delete Product"
+      >
+        <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+      </md-button>
+    </div>
+  </div>
+  <div layout="row" layout-xs="column">
+    <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+      <md-button
+        ng-click="vm.CloseProduct()"
+        class="md-default md-raised"
+        md-ripple-size="auto"
+        aria-label="Close Supplier Form"
+      >
+        <md-icon md-font-icon="fa fa-times"></md-icon>
+        <label class="rxp-margin-left-med rxp-margin-right-med">Close</label>
+      </md-button>
+    </div>
+        <!-- end list of products-->
+        
+
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

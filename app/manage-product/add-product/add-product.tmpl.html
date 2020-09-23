@@ -1,0 +1,981 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Add New Product</h3>
+        <span class="rxp-auto-save-toolbar-txt" ng-if="vm.ProductID"> Auto save Product - Code: {{vm.ProductID}}</span>
+        <md-button class="md-icon-button rxp-close-popup-btt" md-ripple-size="auto" 
+            aria-label="Close" ng-click="vm.CloseForm()">
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page"  ng-show="!vm.isLoading">
+    <form name="vm.AddProductForm" novalidate  ng-submit="vm.AddProductForm.$valid && vm.SubmitData()">
+        <div layout="row" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Product Name</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.Product_Name" required>
+                </md-input-container>
+                <div layout="row" layout-xs="column">
+                    <div  flex="90" flex-xs="100" layout="column">
+                        <md-input-container class="md-block">
+                            <label>Product Suffix</label>
+                            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                            <input type="text" ng-disabled="vm.autoSuffic" placeholder="Concentration - Manufacturer - Country" ng-model="vm.ProductData.Product_Suffix">
+                        </md-input-container>
+                    </div>
+                    <div  flex="10" flex-xs="100" layout="column" layout-align="center center">
+                        <md-checkbox ng-change="vm.updateProductSuffix()" ng-model="vm.autoSuffic">auto</md-checkbox>
+                    </div>
+                </div>
+                
+                <md-input-container class="md-block">
+                    <label>Chemical Name</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_Chemical_Name">
+                </md-input-container>
+                <div layout="row" class='autocomplete-container'>
+                    <md-icon flex="10" class="autocomplete-icon" md-font-icon="zmdi zmdi-account"></md-icon>
+                    <md-autocomplete flex="90" required md-min-length="1" md-search-text-change="vm.searchForManufacturer(vm.searchText)" md-items="item in vm.searchForManufacturer(vm.searchText)" md-search-text="vm.searchText"
+                        md-item-text="item.Supplier_Name" md-selected-item="vm.selectedProduct_Manufacturer" md-no-cache="false" 
+                        md-selected-item-change="vm.manufacturerChanged(item)" md-floating-label="Enter Manufacturer Name">
+                        <md-item-template>
+                            <span md-highlight-text="vm.searchText">{{item.Supplier_Name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No Manufacturer matching "{{vm.searchText}}" were found.
+                        </md-not-found>
+                    </md-autocomplete>
+                </div>
+                <md-input-container class="md-block">
+                    <label>Exporter</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_Exporter">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Abbreviation</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_Abbreviation" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>CAS Number</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_CAS_Number" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>EC Number</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_EC_Number" >
+                </md-input-container>
+            
+                
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+                    <label>Industrial Categories</label>
+                    <md-chips id="ProductCategorieschips" ng-model="vm.selectedCat" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedCatItem"
+                            md-search-text="vm.searchCatText"
+                            md-items="catitem in vm.queryCats(vm.searchCatText)"
+                            md-item-text="catitem.Category_Name"
+                            placeholder="Industrial Categories">
+                            <span md-highlight-text="vm.searchCatText">{{catitem.Category_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.Category_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.Category_ID}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <!-- start Product categories-->
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Product Category(s)"</label>
+                    <md-chips id="ClassificationsChips" ng-model="vm.selectedProductCategories" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedProdCatItem"
+                            md-search-text="vm.searchProdCatText"
+                            md-items="ProdCatitem in vm.queryProdCats(vm.searchProdCatText)"
+                            md-item-text="ProdCatitem.ProductCategory_Name"
+                            placeholder="Prdouct Category(s)">
+                            <span md-highlight-text="vm.searchProdCatText">{{ProdCatitem.ProductCategory_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.ProductCategory_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.ProductCategory_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <!-- end Product categories-->
+                <!-- start selling area-->
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Selling Area(s)"</label>
+                    <md-chips id="ClassificationsChips" ng-model="vm.selectedSellingAreas" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedSeelAreaItem"
+                            md-search-text="vm.searchSeelAreaText"
+                            md-items="SeelAreaitem in vm.querySeelAreas(vm.searchSeelAreaText)"
+                            md-item-text="SeelAreaitem.ProductCategory_Name"
+                            placeholder="Selling Area(s)">
+                            <span md-highlight-text="vm.searchSeelAreaText">{{SeelAreaitem.SellingArea_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.SellingArea_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.SellingArea_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <!--end selling area-->
+                <md-input-container class="rxp-full-width"">
+                    <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+                    <label class="rxp-margin-left-med">Country Of Origin</label>
+                    <md-select placeholder="Country Of Origin" ng-model="vm.ProductData.Product_Origin_Country_Code" ng-change="vm.updateProductSuffix()">
+                        <md-select-header>
+                            <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Countries List</span>
+                        </md-select-header>
+                        <md-option ng-repeat="x in vm.countries" value="{{x.Country_Code}}">
+                            {{x.Country_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Certificate(s)"</label>
+                    <md-chips id="ClassificationsChips" ng-model="vm.selectedProductCertificates" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedProductCertiItem"
+                            md-search-text="vm.searchProdCertiText"
+                            md-items="ProdCertiitem in vm.queryProdCertis(vm.searchProdCertiText)"
+                            md-item-text="ProdCertiitem.Certificate_Name"
+                            placeholder="Product Certificate(s)"
+                            delete-button-label="Remove Certificate"
+                            delete-hint="Press delete to remove Certificate"
+                            secondary-placeholder="+Certificate">
+                            <span md-highlight-text="vm.searchProdCertiText">{{ProdCertiitem.Certificate_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.Certificate_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.Certificate_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <md-input-container class="rxp-full-width">
+                    <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                    <label class="rxp-margin-left-med">Customs Release Type</label>
+                    <md-select placeholder="Product Customs Release Type" ng-model="vm.ProductData.Product_Release_Code">
+                        <md-select-header>
+                            <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Customs Release Types List</span>
+                        </md-select-header>
+                        <md-option ng-repeat="x in vm.ReleaseTypes" value="{{x.ReleaseType_Code}}">
+                            {{x.ReleaseType_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="rxp-full-width"">
+                    <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                    <label class="rxp-margin-left-med">Product Class</label>
+                    <md-select placeholder="Product Class" ng-model="vm.ProductData.Product_Classes_Code">
+                        <md-select-header>
+                            <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Grades List</span>
+                        </md-select-header>
+                        <md-option ng-repeat="x in vm.classes" value="{{x.Class_Code}}">
+                            {{x.Class_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            
+                <md-input-container class="md-block">
+                    <label>Description</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_Description" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Assay</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductData.Product_Assay" >
+                </md-input-container>
+                
+                
+            </div>
+        </div>
+        <md-tabs class="rxp-product-tabs" md-dynamic-height md-border-bottom>
+            <md-tab label="Inventory">
+                <md-tab-label><md-icon md-font-icon="zmdi zmdi-invert-colors"></md-icon> Inventory</md-tab-label>
+                <md-tab-body>
+                    <div layout="row" layout-xs="column">
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Num Of Months Before Expiration</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="number" ng-model="vm.ProductData.Product_ExpirationPeriod">
+                            </md-input-container>
+                            <md-input-container class="rxp-full-width">
+                                <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+                                <label class="rxp-margin-left-med">Middle Unit</label>
+                                <md-select placeholder="Middle Unit" ng-model="vm.ProductData.Product_MiddleUnit" >
+                                    <md-select-header>
+                                        <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Units List</span>
+                                    </md-select-header>
+                                    <md-option ng-repeat="x in vm.productUnits" value="{{x._id}}">
+                                        {{x.ProductUnit_Name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="rxp-full-width">
+                                <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+                                <label class="rxp-margin-left-med">Small Unit</label>
+                                <md-select placeholder="Small Unit" ng-model="vm.ProductData.Product_SmallUnit" >
+                                    <md-select-header >
+                                        <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Units List</span>
+                                    </md-select-header>
+                                    <md-option ng-repeat="x in vm.productUnits" value="{{x._id}}">
+                                        {{x.ProductUnit_Name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Minimum Stocl Limit</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="number" ng-model="vm.ProductData.Product_MinStocklimit" >
+                            </md-input-container>
+                        </div>
+                        <div  flex="10" flex-xs="100" layout="column">
+                        </div>
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="rxp-full-width"">
+                                <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+                                <label class="rxp-margin-left-med">Main Unit</label>
+                                <md-select placeholder="Main Unit" ng-model="vm.ProductData.Product_MainUnit" >
+                                    <md-select-header>
+                                        <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Units List</span>
+                                    </md-select-header>
+                                    <md-option ng-repeat="x in vm.productUnits" value="{{x._id}}">
+                                        {{x.ProductUnit_Name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Num of middle units in Main Unit</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="number" ng-model="vm.ProductData.Product_MiddleUnitCountInMainUnit" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Num of small units in Middle Unit</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="number" ng-model="vm.ProductData.Product_SmallUnitCountInMiddleUnit" >
+                            </md-input-container>
+                            <md-input-container class="rxp-full-width">
+                                <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+                                <label class="rxp-margin-left-med">Origin Variants</label>
+                                <md-select placeholder="Origin Variants" ng-model="vm.ProductData.Product_Origin_Variants" multiple>
+                                    <md-select-header >
+                                        <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Origin Variants List</span>
+                                    </md-select-header>
+                                    <md-option ng-repeat="x in vm.productOriginVariants" value="{{x._id}}">
+                                        {{x.ProductOrigin_Name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="Appearance">
+                <md-tab-label><md-icon md-font-icon="zmdi zmdi-invert-colors"></md-icon> Appearance</md-tab-label>
+                <md-tab-body>
+                    <div layout="row" layout-xs="column">
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="rxp-full-width"">
+                                <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                                <label class="rxp-margin-left-med">Product Form</label>
+                                <md-select placeholder="Product Form" ng-model="vm.ProductData.Product_Form_Code">
+                                    <md-select-header>
+                                        <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Forms List</span>
+                                    </md-select-header>
+                                    <md-option ng-repeat="x in vm.forms" value="{{x.Form_Code}}">
+                                        {{x.Form_Name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Appearance Description</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Appearance" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>MSDS</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_MSDS" >
+                            </md-input-container>
+                        </div>
+                        <div  flex="10" flex-xs="100" layout="column">
+                        </div>
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="rxp-full-width"">
+                                <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                                <label class="rxp-margin-left-med">Packing</label>
+                                <md-select placeholder="Product Package" ng-model="vm.ProductData.Product_Packing_Code">
+                                    <md-select-header>
+                                        <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Packing List</span>
+                                    </md-select-header>
+                                    <md-option ng-repeat="x in vm.packings" value="{{x.Packing_Code}}">
+                                        {{x.Packing_Name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block md-icon-left">
+                                <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                                <label>Storage Condition(s)"</label>
+                                <md-chips id="ClassificationsChips" ng-model="vm.selectedStorageConditions" md-autocomplete-snap
+                                        md-transform-chip="vm.transformChip($chip)"
+                                        md-require-match="true" min-items="1">
+                                    <md-autocomplete
+                                        md-selected-item="vm.selectedStorageCondItem"
+                                        md-search-text="vm.searchStorageCondText"
+                                        md-items="StorageConditem in vm.queryStorageConds(vm.searchStorageCondText)"
+                                        md-item-text="StorageConditem.StorageType_Name"
+                                        placeholder="Storage Condition(s)">
+                                        <span md-highlight-text="vm.searchStorageCondText">{{StorageConditem.StorageType_Name}}</span>
+                                    </md-autocomplete>
+                                    <md-chip-template>
+                                        <span>
+                                        <strong>{{$chip.StorageType_Name}}</strong>
+                                        <em class="rxp-chip-subtitle">code: ({{$chip.StorageType_Code}})</em>
+                                        </span>
+                                    </md-chip-template>
+                                </md-chips>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="Physical Data">
+                <md-tab-label><md-icon md-font-icon="zmdi zmdi-toys"></md-icon> Physical Data</md-tab-label>
+                <md-tab-body>
+                    <div layout="row" layout-xs="column">
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Active Content</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Active_Content" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>PH</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_pH" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Hazen Color</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Hazen_color" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Viscosity</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Viscosity" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Heavy Metals</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Heavy_Metals" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Water Insoluble Matter</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Water_Insoluble_Matter" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Volatile Matter</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Volatile_Matter" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Foreign Matter</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Foriein_Matter" >
+                            </md-input-container>
+                            <div layout="row" layout-xs="column">
+                                <div  flex="65" flex-xs="100" layout="column">
+                                    <md-input-container class="md-block">
+                                        <label>Boiling Point</label>
+                                        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                        <input type="text"  ng-model="vm.ProductData.Product_Boiling_Point" >
+                                    </md-input-container>
+                                </div>
+                                <div  flex="35" flex-xs="100" layout="column">
+                                    <md-input-container class="rxp-full-width"">
+                                        <label class="rxp-margin-left-med">Temperature Unit</label>
+                                        <md-select placeholder="Pick Unit" ng-model="vm.ProductData.Boiling_Unit_Tempreture_Unit_ID">
+                                            <md-select-header>
+                                                <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Temperature Unit List</span>
+                                            </md-select-header>
+                                            <md-option ng-repeat="x in vm.TemperatureUnits" value="{{x.TemperatureUnit_Code}}">
+                                                {{x.TemperatureUnit_Name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div layout="row" layout-xs="column">
+                                <div  flex="65" flex-xs="100" layout="column">
+                                    <md-input-container class="md-block">
+                                        <label>Melting Point</label>
+                                        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                        <input type="text"  ng-model="vm.ProductData.Product_Melting_Point" >
+                                    </md-input-container>
+                                </div>
+                                <div  flex="35" flex-xs="100" layout="column">
+                                    <md-input-container class="rxp-full-width"">
+                                        <label class="rxp-margin-left-med">Temperature Unit</label>
+                                        <md-select placeholder="Pick Unit" ng-model="vm.ProductData.Melting_Unit_Tempreture_Unit_ID">
+                                            <md-select-header>
+                                                <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Temperature Unit List</span>
+                                            </md-select-header>
+                                            <md-option ng-repeat="x in vm.TemperatureUnits" value="{{x.TemperatureUnit_Code}}">
+                                                {{x.TemperatureUnit_Name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            
+                            <md-input-container class="md-block">
+                                <label>Loss On Drying</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Loss_On_Drying" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Solubility</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Solubility" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Absorbance</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Absorbance" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>InfraRed Absorption</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_InfraRed_Absorption" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Partical Size</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Partical_Size" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Thin Layer Chromatography</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Think_Layer_Chromatography" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Starch Test</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Starch_Test" >
+                            </md-input-container>
+                            
+                        </div>
+                        <div  flex="10" flex-xs="100" layout="column">
+                        </div>
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Sp Gravity</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Sp_gravity" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Identifications Relative Density</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Identifications_Relative_Density" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Relative Density From</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Relative_Density_From" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Relative Density To</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Relative_Density_To" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Bulk Density From</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Bulk_Density_From" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Bulk Density To</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Bulk_Density_to" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Relative Index</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Relative_Index" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Impurities Related Substance</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Impurities_Related_Substance" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Water Content</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Water_Content" >
+                            </md-input-container>
+                            <div layout="row" layout-xs="column">
+                                <div  flex="35" flex-xs="100" layout="column">
+                                    <md-input-container class="md-block">
+                                        <label>Weight Value</label>
+                                        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                        <input type="text"  ng-model="vm.ProductData.Product_Weight_Value" >
+                                    </md-input-container>
+                                </div>
+                                <div  flex="65" flex-xs="100" layout="column">
+                                    <md-input-container class="rxp-full-width"">
+                                        <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                                        <label class="rxp-margin-left-med">Weight Unit</label>
+                                        <md-select placeholder="Pick Weight Unit" ng-model="vm.ProductData.Product_Weight_Unit_Code">
+                                            <md-select-header>
+                                                <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Weight Unit List</span>
+                                            </md-select-header>
+                                            <md-option ng-repeat="x in vm.Weights" value="{{x.Weight_Code}}">
+                                                {{x.Weight_Name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div layout="row" layout-xs="column">
+                                <div  flex="35" flex-xs="100" layout="column">
+                                    <md-input-container class="md-block">
+                                        <label>Concentration Value</label>
+                                        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                        <input type="text"  ng-model="vm.ProductData.Product_Concentration_Value" ng-change="vm.updateProductSuffix()" >
+                                    </md-input-container>
+                                </div>
+                                <div  flex="65" flex-xs="100" layout="column">
+                                    <md-input-container class="rxp-full-width"">
+                                        <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                                        <label class="rxp-margin-left-med">Concentration Unit</label>
+                                        <md-select placeholder="Pick Concentration Unit" ng-model="vm.ProductData.Product_Concentration_Unit_Code">
+                                            <md-select-header>
+                                                <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Concentration Unit List</span>
+                                            </md-select-header>
+                                            <md-option ng-repeat="x in vm.Concentrations" value="{{x.Concentration_Code}}">
+                                                {{x.Concentration_Name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <md-input-container class="md-block">
+                                <label>Residue On Sieve</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Residue_On_Sieve" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Residual On Solvent</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Residual_On_Solvent" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Sulfur Dioxides Residual</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Sulfur_Dioxides_Residual" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Non-Volatyl Reside</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Non_Volatyl_Reside" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Specific Surface Area</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Specific_Surface_Area" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Specific Opticical Rotation</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Spescific_Opticical_Rotation" >
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="Chemical Data">
+                <md-tab-label><md-icon md-font-icon="fa fa-flask"></md-icon> Chemical Data</md-tab-label>
+                <md-tab-body>
+                    <div layout="row" layout-xs="column">
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Molecular Formula</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Molecular_Formula" >
+                            </md-input-container>
+                            <md-input-container class="md-block rxp-no-bottom-margins">
+                                <label>Molecular Weight</label>
+                                <md-icon md-font-icon="fa fa-pie-chart"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Molecular_Weight" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Organic Compounds</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Organic_Compounds" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Chloride</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Chloride" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Iron</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Iron" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Phosphor Acid</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Phosphorous_Acid" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Phosphate</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_O_phosphate" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Sulphates</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Sulphates" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Arsenic</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Arsenic" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Lead</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Lead" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Mercury</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Mercury" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Cadmium</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Cadmium" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Ferrous Fe2O3</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Ferrous_Fe2o3" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Chrome</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Chrome" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Selenium</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Selenium" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Nickel</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Nickel" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Copper</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Copper" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Oxalic Acid</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Oxalic_Acid" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Fumaric Acid</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Fumaric_Acid" >
+                            </md-input-container>
+                        </div>
+                        <div  flex="10" flex-xs="100" layout="column">
+                        </div>
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Alumumium Al2O3</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Alumumium_Al2O3" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Titanicum Tio2</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Titanicum_Tio2" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Free Fatty Acids</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Free_Fatty_Acids" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Peroxide Value</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Peroxide_Value" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Iodine Value</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Iodine_Value" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Acetone</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Acetone" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Methanol</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Methanol" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Hydroyl Number</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Hydroyl_Number" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Aldehyles</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Aldehyles" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Esters</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Esters" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Chlorenated Compound</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Chlorenated_Compound" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Antimony</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Antimony" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Maliec Acid</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Maliec_Acid" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Ash</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Ash" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Protien</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Protien" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Nitrates</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Nitrates" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Aflatoxine</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Aflatoxine" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Melamine</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Melamine" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Free_Halogens</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Free_Halogens" >
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="Micorbiology Data">
+                <md-tab-label><md-icon md-font-icon="zmdi zmdi-bug"></md-icon> Micorbiology Data</md-tab-label>
+                <md-tab-body>
+                    <div layout="row" layout-xs="column">
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Remarkes</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Remarkes" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>E-Coli</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_EColi" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Mould</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Mould" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Escherichia Cali</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Escherichia_Cali" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Staphyloccuse Aureus</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Staphyloccuse_Aureus" >
+                            </md-input-container>
+                        </div>
+                        <div  flex="10" flex-xs="100" layout="column">
+                        </div>
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Total Plate Count</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text"  ng-model="vm.ProductData.Product_Total_Plate_Count" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Yeast</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Yeast" >
+                            </md-input-container>
+                                <md-input-container class="md-block">
+                                <label>Pathogenic Bacterium</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Pathogenic_Bacterium" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Product Salmonila</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Salmonila" >
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-tab-body>
+            
+            </md-tab>
+            <md-tab label="Other Data">
+                <md-tab-label><md-icon md-font-icon="zmdi zmdi-flare"></md-icon> Other Data</md-tab-label>
+                <md-tab-body>
+                    <div layout="row" layout-xs="column">
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Extra field 1</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra1" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 2</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra2" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 3</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra3" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 4</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra4" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 5</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra5" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 6</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra6" >
+                            </md-input-container>
+                        </div>
+                        <div  flex="10" flex-xs="100" layout="column">
+                        </div>
+                        <div  flex="45" flex-xs="100" layout="column">
+                            <md-input-container class="md-block">
+                                <label>Extra field 7</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra7" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 8</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra8" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 9</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra9" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 10</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra10" >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Extra field 11</label>
+                                <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                                <input type="text" ng-model="vm.ProductData.Product_Extra11" >
+                            </md-input-container>
+                        </div>
+                    </div>
+              
+                </md-tab-body>
+            
+            </md-tab>
+        </md-tabs>
+             
+
+            
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div class="rxp-finish-message-loading-bar">
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>

@@ -1,0 +1,167 @@
+<md-card class="rxp-external-access-form">
+    <md-toolbar class="padding-20 text-center">
+        <img ng-src="{{::vm.triSettings.logo}}" alt="{{vm.triSettings.name}}">
+        <h1 class="md-headline" translate>Highchem System</h1>
+        <span class="rxp-sub-title">Supplier Pricing Form </span>
+    </md-toolbar>
+    <md-content class="md-padding" ng-if="!vm.isFinished && !vm.isStarting">
+        <div layout="row" hide-xs  class="hcm-contact-grid-header jsgrid-header-row">
+            <div class="jsgrid-header-cell" flex="25" flex-xs="25" layout="column" layout-align="center start">
+                Product
+            </div>
+            <div class="jsgrid-header-cell" flex="15" flex-xs="15" layout="column" layout-align="center start">
+                Required Quantity
+            </div>
+            <div class="jsgrid-header-cell" flex="15" flex-xs="15" layout="column" layout-align="center start">
+                Avilable Quantity
+            </div>
+            <div class="jsgrid-header-cell" flex="15" flex-xs="15" layout="column" layout-align="center start">
+                Price
+            </div>
+            <div class="jsgrid-header-cell" flex="30" flex-xs="30" layout="column" layout-align="center start">
+                note
+            </div>
+        </div>
+        <div layout="row" hide-xs  class="jsgrid-row" ng-repeat="productRequest in vm.RequestPriceData" >
+            <div class="jsgrid-cell" flex="25" flex-xs="25" layout="column" layout-align="center start">
+                {{productRequest.Product_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="15" flex-xs="15" layout="column" layout-align="center start">
+                {{productRequest.Quantity_Required}}  {{productRequest.Wieght_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="15" flex-xs="15" layout="column" layout-align="center start">
+                <input type="Number" placeholder="Available Quantity" ng-model="productRequest.Quantity_Available">
+            </div>
+            <div class="jsgrid-cell" flex="15" flex-xs="15" layout="column" layout-align="center start">
+                <input type="Number" placeholder="Price" ng-model="productRequest.Price">
+            </div>
+            <div class="jsgrid-cell" flex="30" flex-xs="30" layout="column" layout-align="center start">
+                <input type="text" placeholder="Note" ng-model="productRequest.Note">
+            </div>
+        </div>
+        <div layout="column" hide-gt-xs ng-repeat="productRequest in vm.RequestPriceData" >
+            <div flex="100" flex-xs="100" layout="row" layout-align="start center">
+                • Product : {{productRequest.Product_Name}}
+            </div>
+            <div layout="row">
+                <div class="rxp-padding-left-xxlarg rxp-margin-small"  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    Required Quantity:  
+                </div>
+                <div  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    {{productRequest.Quantity_Required}}  {{productRequest.Wieght_Name}}
+                </div>
+            </div>
+            <div layout="row">
+                <div class="rxp-padding-left-xxlarg rxp-margin-small"  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    Avilable Quantity:
+                </div>
+                <div  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    <input type="text" placeholder="Enter Avilable Quantity" ng-model="productRequest.Quantity_Available">
+                </div>
+            </div>
+            <div layout="row">
+                <div class="rxp-padding-left-xxlarg rxp-margin-small"  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    Price:
+                </div>
+                <div  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    <input type="text" placeholder="Enter Price" ng-model="productRequest.Price">
+                </div>
+            </div>
+            <div layout="row">
+                <div class="rxp-padding-left-xxlarg rxp-margin-small"  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    note:
+                </div>
+                <div  flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    <input type="text" placeholder="Enter Note" ng-model="productRequest.Note">
+                </div>
+            </div>
+            <md-divider></md-divider>
+        </div>
+        <!-- hide-xs -->
+        <form name="vm.SupplierPricingForm" class="rxp-supplier-fill-price-form" ng-submit="vm.SupplierPricingForm.$valid && vm.SubmitRequest()">
+            <div layout="row" layout-xs="column">
+                <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width">
+                        <label>Place of Delivery</label>
+                        <md-icon md-font-icon="zmdi zmdi-truck"></md-icon>
+                        <input type="text" placeholder="ex: Our warehouse or customer warehouse " ng-model="vm.Place_of_Delivery" >
+                    </md-input-container>
+                </div>
+                <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width">
+                        <label>Delivery Time</label>
+                        <md-icon md-font-icon="zmdi zmdi-time"></md-icon>
+                        <input type="text" placeholder="Insert note of delivery time" ng-model="vm.Delivery_Time" >
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" layout-xs="column">
+                <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width">
+                        <label>Method of Payment</label>
+                        <md-icon md-font-icon="zmdi zmdi-money-box"></md-icon>
+                        <input type="text" placeholder="ex: Deposit, Cash, or Check (before - with - after) delivery" ng-model="vm.Method_of_Payment" >
+                    </md-input-container>
+                </div>
+                <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width">
+                        <label>Taxes Types</label>
+                        <md-icon md-font-icon="zmdi zmdi-balance-wallet"></md-icon>
+                        <input type="text" placeholder="ex: Prices include tax, add extra 14% Vat" ng-model="vm.Taxes_Types" >
+                    </md-input-container>
+                </div>
+                
+            </div>
+            <div layout="row" layout-xs="column">
+                <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width">
+                        <label>Delivery Cost </label>
+                        <md-icon md-font-icon="zmdi zmdi-money"></md-icon>
+                        <input type="text" placeholder="insert cost if avilable" ng-model="vm.Delivery_Cost" >
+                    </md-input-container>
+                </div>
+                <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width">
+                        <label>Work Time Off</label>
+                        <md-icon md-font-icon="zmdi zmdi-calendar"></md-icon>
+                        <input type="text" placeholder="Off Days & On Days, Open 8:00AM Close 5:00PM working hours" ng-model="vm.Work_Time_Off" >
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" layout-xs="column">
+                <div flex="50" flex-xs="50" layout="column" layout-align="center start">
+                    <md-input-container class="md-block rxp-control-full-width rxp-external-access-sub-grid-control">
+                        <label class="rxp-input-lable-extra-larg" translate="This Prices are Valid Till:"></label>
+                        <md-datepicker ng-model="vm.RequestPrice_Valid_Date" flex="100" flex-xs="100" 
+                            md-placeholder="Select Validation Date" required>
+                        </md-datepicker>
+                    </md-input-container>
+                </div>
+                <div flex="50" flex-xs="50" layout="column" layout-align="center end">
+                    <md-button type="submit" ng-disabled="vm.isLoding" class="md-primary md-raised rxp-search-supplier-by-product-btt" md-ripple-size="auto" 
+                        aria-label="Submit Prices">
+                        <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+                        <label translate="Submit Prices"></label>
+                    </md-button>
+                </div>
+            </div>
+            
+        </form>
+        <md-progress-linear ng-if="vm.isLoding" class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+    </md-content>
+    <md-content class="md-padding" ng-if="vm.isFinished">
+        <div layout="row" layout-xs="column" class="rxp-finish-message-container">
+            <div flex="100" flex-xs="100" layout="column" layout-align="center center">
+                <i class="fa fa-flag-checkered" aria-hidden="true"></i> 
+                <h2>{{vm.dataIsEntered}} Thanks for submitting your prices</h2>
+            </div>
+        </div>
+    </md-content>
+    <md-content class="md-padding" ng-if="vm.isStarting">
+        <div layout="row" layout-xs="column">
+            <div flex="100" flex-xs="100" class="rxp-normal-hight-container" layout="column" layout-align="center center">
+                <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+            </div>
+        </div>
+    </md-content>
+</md-card>

@@ -1,0 +1,188 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h3 class="center-text">Add New Requist</h3>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.ClosemdDialog()">
+            <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+    <form name="vm.PriceRequestForm" ng-submit="vm.PriceRequestForm.$valid && vm.SubmitRequest()">
+        <div layout="row" layout-fill >
+            <div  flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container  flex="100" class="md-block">
+                    <label translate="Select Request date"></label>
+                    <md-datepicker ng-model="vm.RequestPrice.RequestPrice_Create_Date" flex="100" flex-xs="100" 
+                        md-placeholder="Price Request date" class="rxp-normal-date-piker-width" required>
+                    </md-datepicker>
+                </md-input-container>
+            </div> 
+            <div flex="5" class="rxp-icon-container" flex-xs="100" layout="column" layout-padding>
+                <md-icon md-font-icon="zmdi zmdi-accounts-alt"></md-icon>
+            </div>
+            <div flex="45" flex-xs="100" layout="column" layout-padding>
+                <md-autocomplete 
+                    md-items="item in vm.searchForCustomer(vm.searchText)" 
+                    md-search-text="vm.searchText"
+                    md-item-text="item.Customer_Name"   
+                    md-selected-item="vm.selectedCustomer"
+                    md-no-cache="false"
+                    md-floating-label="Enter Customer Name">
+                    <md-item-template>
+                        <span md-highlight-text="vm.searchText">{{item.Customer_Name}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No customer matching "{{vm.searchText}}" were found.
+                    </md-not-found>
+                </md-autocomplete>
+            </div>  
+        </div> 
+        <md-subheader class="md-no-sticky">Select Suppliers</md-subheader>
+        <md-divider></md-divider>
+        <div layout="row" layout-fill >
+            <div flex="40" flex-xs="100" layout="column" layout-padding>
+                <md-radio-group class="md-primary" ng-model="vm.selectSuplierType" ng-init="vm.selectSuplierType='supliers'">
+                    <md-radio-button value="supliers">Supliers</md-radio-button>
+                    <md-radio-button value="Categories">Categories</md-radio-button>
+                </md-radio-group>
+            </div> 
+            <div flex="10" flex-xs="100" layout="column" ng-if="vm.selectSuplierType == 'supliers'">
+                
+            </div>
+            <div ng-if="vm.selectSuplierType == 'supliers'" flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+                    <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+                    <label class="rxp-supplier-chips-lable">Select Suppliers</label>
+                    <md-chips ng-model="vm.selectedSuppliers" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedSupplierItem"
+                            md-search-text="vm.searchSupplierText"
+                            md-items="supplieritem in vm.querySuppliers(vm.searchSupplierText)"
+                            md-item-text="supplieritem.Supplier_Name"
+                            placeholder="Suppliers">
+                            <span md-highlight-text="vm.searchSupplierText">{{supplieritem.Supplier_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.Supplier_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.Supplier_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+            </div> 
+            <div flex="10" flex-xs="100" layout="column" ng-if="vm.selectSuplierType == 'Categories'">
+            </div> 
+            <div ng-if="vm.selectSuplierType == 'Categories'" flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+                    <label>Select Category</label>
+                    <md-select placeholder="Select Category" ng-model="vm.RequestPrice.Category_ID">
+                        <md-option ng-repeat="x in vm.CatigoryList" value="{{x.Category_ID}}">
+                                {{x.Category_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div> 
+        </div>   
+        
+        <md-subheader class="md-no-sticky">Product Request</md-subheader>
+        <md-divider></md-divider>
+
+        <div  layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+                <div flex="5" class="rxp-icon-container" flex-xs="100" layout="column" layout-padding>
+                    <md-icon md-font-icon="fa fa-dropbox"></md-icon>
+                </div>
+                <div flex="30" flex-xs="100" layout="column" class="">
+                    <md-autocomplete class="hcm-select-product-name-field"
+                        md-items="productitem in vm.searchForproduct(vm.productsearchText)" 
+                        md-search-text="vm.productsearchText"
+                        md-item-text="productitem.Product_Name"   
+                        md-selected-item="vm.selectedProduct"
+                        md-no-cache="false"
+                        md-floating-label="Enter Product Name">
+                        <md-item-template>
+                            <span md-highlight-text="vm.productsearchText">{{productitem.Product_Name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No Product matching "{{vm.productsearchText}}" were found.
+                        </md-not-found>
+                    </md-autocomplete>
+                </div>
+                <div flex="5" flex-xs="100" layout="column" class=""></div>
+                <div flex="25" flex-xs="100" layout="column" class="">
+                    <md-input-container md-no-float class="md-block hcm-Amount-number-field">
+                        <label>Amount</label>
+                        <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+                        <input type="number" step="0.01" ng-model="vm.Request_Amount">
+                    </md-input-container>
+                </div>
+                <div flex="5" flex-xs="100" layout="column" class=""></div>
+                <div flex="30" flex-xs="100" layout="column" class="">
+                    <md-input-container class="md-block hcm-weight-name-field">
+                        <md-icon md-font-icon="fa fa-balance-scale" class="chips-icon"></md-icon>
+                        <label>Select Unit</label>
+                        <md-select placeholder="Select Unit" ng-model="vm.Request_Units">
+                            <md-option ng-repeat="RequestWeight in vm.WeightUnitsList" ng-value="{{RequestWeight}}">
+                                {{RequestWeight.Weight_Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="15" flex-xs="100" layout="column" layout-align="end end" class="hcm-add-product-btt-container">
+                    <md-button  ng-click="vm.AddProductRequest()" class="md-primary md-raised" md-ripple-size="auto" 
+                        aria-label="Submit">
+                        <md-icon md-font-icon="zmdi zmdi-long-arrow-down"></md-icon>
+                        <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                    </md-button>
+                </div>
+
+        </div>
+        <md-divider class="rxp-margin-top-larg"></md-divider>
+        <div layout="row" layout-xs="column" class="hcm-contact-grid-header jsgrid-header-row">
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                Product :
+            </div>
+            <div class="jsgrid-header-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+                Amount :
+            </div>
+            <div class="jsgrid-header-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+                Unit
+            </div>
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                
+            </div>
+        </div>
+        <md-divider></md-divider>
+        <span class="md-body-2 hcm-contact-no-data" ng-if="vm.Customer_Contact.length==0">No Contact Data Inserted</span>
+        <div layout="row" layout-xs="column" class="jsgrid-row" ng-repeat="productRequest in vm.ProductRequests" >
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Request_Product}}
+            </div>
+            <div class="jsgrid-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Request_Amount}}
+            </div>
+            <div class="jsgrid-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Request_Units}}
+            </div>
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" >
+                <md-button ng-click="vm.DeleteRequest(Request)" class="md-default hcm-ingrid-delete-btt" md-ripple-size="auto" 
+                    aria-label="Delete Contact">
+                    <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+                </md-button>
+            </div>
+        </div>
+        <div class="rxp-margin-top-xlarg" layout="row" layout-xs="column">
+            <div flex="100" flex-xs="100" layout="column" layout-align="center center">
+                <md-button type="submit"  class="md-primary md-raised" md-ripple-size="auto" 
+                    aria-label="Submit">
+                    <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+                    <label translate="Send Request"></label>
+                </md-button>
+            </div>
+        </div>
+    </form>
+</md-content>

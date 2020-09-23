@@ -1,0 +1,33 @@
+<md-content class="padded-content-page">
+        <div class="row">
+          <div
+            flex="100"
+            flex-xs="100"
+            layout="row"
+            class="rxp-search-by-radio-selection"
+          >
+          <div flex="45" flex-xs="100" layout="column">
+            Sum of all debts for all suppliers :
+            <span style="color: blue;font-weight: bolder;"
+              >{{(vm.Total_All_Purchasings_Prices_After_Taxes - vm.Total_All_Purchasings_Payments_Prices).toFixed(2) }}</span
+            >
+            </span>
+          </div>
+          <div flex="45" flex-xs="100" layout="column">
+            Sum of all Financial dues of all customers :
+            <span style="color: blue;font-weight: bolder;"
+              >{{ (vm.Total_All_Sales_Prices_After_Taxes - vm.Total_All_Sales_Receivables_Prices).toFixed(2) }}</span
+            >
+            </span>
+          </div>
+          <div flex="45" flex-xs="100" layout="column">
+          debts for all suppliers - Financial dues of all customers
+          <span style="color: blue;font-weight: bolder;"
+              >{{ ((vm.Total_All_Purchasings_Prices_After_Taxes - vm.Total_All_Purchasings_Payments_Prices) - (vm.Total_All_Sales_Prices_After_Taxes - vm.Total_All_Sales_Receivables_Prices)).toFixed(2) }}</span
+            >
+            </span>
+          </div>
+          </div>
+        </div>
+    
+</md-content>

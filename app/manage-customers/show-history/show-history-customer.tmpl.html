@@ -1,0 +1,292 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Customer History</h3>
+        <md-button
+            class="md-icon-button rxp-close-popup-btt"
+            md-ripple-size="auto"
+            aria-label="Close"
+            ng-click="vm.CloseForm()"
+        >
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content ng-show="!vm.isLoading" style="overflow-x: hidden">
+    <div layout="row" layout-fill>
+        <div flex="20" class="rxp-left-sticky-menu rxp-white-bg" flex-xs="100" layout="column">
+            <ul>
+                <li ng-repeat="item in vm.checkedDates" class="rxp-history-item"  ng-click="vm.ShowHistory(item)">
+                    <md-icon md-font-icon="zmdi zmdi-time"></md-icon>
+                    {{item | date:'dd MMMM yyyy'}}
+                    
+                </li>
+            </ul>
+        </div>
+        <div  flex="80" flex-xs="100" ng-if="vm.selectedDate" layout="column" class="rxp-left-sticky-menu" ng-repeat="SelectedHistoryData in vm.history | filter:{Customer_EditingTime:vm.selectedDate}">
+            <!-- Revision Data container -->
+            <span><md-icon md-font-icon="zmdi zmdi-time"></md-icon>Revision Info</span>
+            <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="45" layout="column">
+                    <span class="history-data-title">Edited By: 
+                        <span class="history-data-value">{{SelectedHistoryData.HistoryEditedUser.User_Name}}</span>
+                    </span>
+                    <span class="history-data-title">Edited On: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_EditingTime | date:'dd MMMM yyyy'}}</span>
+                    </span>
+                </div>
+                <div  flex="45" flex-xs="45" layout="column">
+                    <span class="history-data-title">Approved By: 
+                        <span class="history-data-value">{{SelectedHistoryData.HistoryCheckedUser.User_Name}}</span>
+                    </span>
+                    <span class="history-data-title">Approved On: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_CheckedDate | date:'dd MMMM yyyy'}}</span>
+                    </span>
+                </div>
+            </div>
+            <md-divider class="rxp-field-divider"></md-divider>
+            <span><md-icon md-font-icon="zmdi zmdi-truck"></md-icon>Customer Data</span>
+            <!-- Customer Status Container -->
+            <div layout="row" layout-xs="column">
+                <div  flex="30" flex-xs="30" layout="column" layout-align="center center">            
+                    
+                </div>
+                <div  flex="5" flex-xs="5" layout="column">
+                </div>
+                <div  flex="30" flex-xs="30" layout="column" layout-align="center center">
+                </div>
+                <div  flex="5" flex-xs="5" layout="column">
+                </div>
+                <div  flex="30" flex-xs="30" layout="column" layout-align="center center">      
+                    <md-switch class="md-primary" ng-model="SelectedHistoryData.Customer_IsActive" ng-disabled="true" aria-label="Status" 
+                        ng-true-value ='1' ng-false-value='0'>
+                        <md-icon md-font-icon="fa fa-asterisk"></md-icon>Status
+                    </md-switch>
+                </div>
+            </div>
+            <!-- Customer Data Container -->
+            <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Customer Name: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_Name}}</span>
+                    </span>
+                    <span class="history-data-title">E-mail Address: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_Email}}</span>
+                    </span>
+                </div>
+                <div  flex="10" flex-xs="100" layout="column">
+                </div>
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Telephone: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_Phone}}</span>
+                    </span>
+                    <span class="history-data-title">Address: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_Address || "Empty Info"}}</span>
+                    </span>
+                </div>
+            </div>
+            <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Address GPS Location: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_AddressGPSLocation || "Empty Info"}}</span>
+                    </span>
+                    <span class="history-data-title">Country: 
+                        <span class="history-data-value">{{SelectedHistoryData.Historycountry.Country_Name || "Empty Info"}}</span>
+                    </span>
+                    <span class="history-data-title">City: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_City || "Empty Info"}}</span>
+                    </span>
+                </div>
+                <div  flex="10" flex-xs="100" layout="column">
+                </div>
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Inventory Address: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_StoreAddress || "Empty Info"}}</span>
+                    </span>
+                    <span class="history-data-title">Inventory Address GPS Location: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_StoreGPSLocation || "Empty Info"}}</span>
+                    </span>
+                </div>
+            </div>
+
+            <md-divider class="rxp-field-divider"></md-divider>
+            <!-- Customer Classification Data Container -->
+            <span><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Classification Data</span>
+            <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Categories: 
+                        <span class="history-data-value history-data-chips " ng-repeat="category in SelectedHistoryData.HistoryCategory">
+                            {{category.Category_Name}}
+                        </span>
+                    </span>
+                    <!--start product categories -->
+                    <span class="history-data-title"
+                    >Product Categories:
+                    <span
+                      class="history-data-value history-data-chips "
+                      ng-repeat="x in SelectedHistoryData.Historyproductcategory"
+                    >
+                      {{x.ProductCategory_Name}}
+                    </span>
+                    <span
+                      class="history-data-value"
+                      ng-if="SelectedHistoryData.Historyproductcategory.length==0"
+                    >
+                      Empty Info
+                    </span>
+                  </span>
+                    <!-- end product categories -->
+                      <!--start selling areas -->
+                      <span class="history-data-title"
+                      >Selling Areas:
+                      <span
+                        class="history-data-value history-data-chips "
+                        ng-repeat="x in SelectedHistoryData.HistorySellingArea"
+                      >
+                        {{x.SellingArea_Name}}
+                      </span>
+                      <span
+                        class="history-data-value"
+                        ng-if="SelectedHistoryData.HistorySellingArea.length==0"
+                      >
+                        Empty Info
+                      </span>
+                    </span>
+                      <!-- end selling areas -->
+                    <span class="history-data-title">Customer Business Types: 
+                        <span class="history-data-value history-data-chips " ng-repeat="btype in SelectedHistoryData.HistoryCustomerType">
+                            {{btype.SupplierType_Name}}
+                        </span>
+                        <span class="history-data-value" ng-if="SelectedHistoryData.HistoryCustomerType.length==0">
+                            Empty Info
+                        </span>
+                    </span>
+                </div>
+                <div  flex="10" flex-xs="100" layout="column">
+                </div>
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Payment Methods: 
+                        <span class="history-data-value history-data-chips " ng-repeat="paymethod in SelectedHistoryData.HistoryPaymentMethod">
+                            {{paymethod.PaymentMethod_Name}}
+                        </span>
+                        <span class="history-data-value" ng-if="!SelectedHistoryData.HistoryPaymentMethod">
+                            Empty Info
+                        </span>
+                    </span>
+                    <span class="history-data-title">Ways Of Delivery: 
+                        <span class="history-data-value history-data-chips " ng-repeat="wayofdelivery in SelectedHistoryData.HistoryWayOfDeliver">
+                            {{wayofdelivery.WayOfDelivary_Name}}
+                        </span>
+                        <span class="history-data-value" class="history-data-value" ng-if="!SelectedHistoryData.HistoryWayOfDeliver">
+                            Empty Info
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Agencies: 
+                        <span class="history-data-value history-data-chips " ng-repeat="agency in SelectedHistoryData.Customer_Agencies">
+                            {{agency}}
+                        </span>
+                        <span class="history-data-value" ng-if="SelectedHistoryData.Customer_Agencies.length==0">
+                            Empty Info
+                        </span>
+                    </span>
+                    <span class="history-data-title">Certificates: 
+                        <span class="history-data-value history-data-chips " ng-repeat="certificate in SelectedHistoryData.Customer_Certificates">
+                            {{certificate}}
+                        </span>
+                        <span class="history-data-value" ng-if="SelectedHistoryData.Customer_Certificates.length==0">
+                            Empty Info
+                        </span>
+                    </span>
+                </div>
+                <div  flex="10" flex-xs="100" layout="column">
+                </div>
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Class: 
+                        <span class="history-data-value">
+                            {{SelectedHistoryData.HistoryCustomerClass.Class_Name }}
+                        </span>
+                        <span class="history-data-value" ng-if="!SelectedHistoryData.HistoryCustomerClass">
+                            Empty Info
+                        </span>
+                    </span>
+                    <span class="history-data-title">Rate: 
+                        <span class="history-data-value">
+                            {{SelectedHistoryData.Customer_Rate || 'Empty Info'}}
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <md-divider class="rxp-field-divider"></md-divider>
+            <!-- Customer Extra Data Container -->
+            <span><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Extra Data</span>
+            <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Extra-field 1: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_ExtraField1 || "Empty Info" }}</span>
+                    </span>
+                    <span class="history-data-title">Extra-field 2: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_ExtraField2 || "Empty Info" }}</span>
+                    </span>
+                    <span class="history-data-title">Extra-field 3: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_ExtraField3 || "Empty Info" }}</span>
+                    </span>
+                </div>
+                <div  flex="10" flex-xs="100" layout="column">
+                </div>
+                <div  flex="45" flex-xs="100" layout="column">
+                    <span class="history-data-title">Extra-field 4: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_ExtraField4 || "Empty Info" }}</span>
+                    </span>
+                    <span class="history-data-title">Extra-field 5: 
+                        <span class="history-data-value">{{SelectedHistoryData.Customer_ExtraField5 || "Empty Info" }}</span>
+                    </span>
+                </div>
+            </div>
+            
+            <md-divider class="rxp-field-divider"></md-divider>
+            <!-- Customer Contact Data Container -->
+            <span><md-icon md-font-icon="zmdi zmdi-account-box-mail"></md-icon>Contacts</span>
+            <div class="rxp-padding-left-large">
+                <md-divider class="rxp-margin-top-larg"></md-divider>
+                <div layout="row" layout-xs="column" class="hcm-contact-grid-header jsgrid-header-row">
+                    <div class="jsgrid-header-cell" flex="20" flex-xs="20" layout="column" layout-align="center start">
+                        Title:
+                    </div>
+                    <div class="jsgrid-header-cell" flex="30" flex-xs="30" layout="column" layout-align="center start">
+                        Name:
+                    </div>
+                    <div class="jsgrid-header-cell" flex="25" flex-xs="25" layout="column" layout-align="center start">
+                        Phone(s)
+                    </div>
+                    <div class="jsgrid-header-cell" flex="25" flex-xs="25" layout="column" layout-align="center start">
+                        E-Mail(s)
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <span class="md-body-2 hcm-contact-no-data" ng-if="SelectedHistoryData.Customer_Contact.length==0">No Contact Data Inserted</span>
+                <div layout="row" layout-xs="column" class="jsgrid-row" ng-repeat="contact in SelectedHistoryData.Customer_Contact" >
+                    <div class="jsgrid-cell" flex="20" flex-xs="20" layout="column" layout-align="center start">
+                        {{contact.Customer_ContactTitle}}
+                    </div>
+                    <div class="jsgrid-cell" flex="30" flex-xs="30" layout="column" layout-align="center start">
+                        {{contact.Customer_ContactName}}
+                    </div>
+                    <div class="jsgrid-cell" flex="25" flex-xs="25" layout="column">
+                        <span ng-repeat="phone in contact.Customer_ContactTelphone" class="rxp-contact-chips">
+                            {{::phone}}
+                        </span>
+                    </div>
+                    <div class="jsgrid-cell" flex="25" flex-xs="25" layout="column">
+                        <span ng-repeat="email in contact.Customer_ContactEmail" class="rxp-contact-chips">
+                            {{::email}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</md-content>

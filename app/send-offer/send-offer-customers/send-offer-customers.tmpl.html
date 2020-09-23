@@ -1,0 +1,36 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h3 class="center-text">View Offer Customers</h3>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.ClosemdDialog()">
+            <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page" ng-show="!vm.isLoading">
+
+    <div>
+        <div class="layout-column flex-xs-100 flex-75">
+            <md-input-container class="md-block rxp-search-text-box-large rxp-no-margin">
+                <label>Filter Customers</label>
+                <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+                <input type="text" ng-model="CustomerFilter">
+            </md-input-container>
+        </div>
+        <md-list-item ng-repeat="item in vm.SendOfferData.Customer | filter:CustomerFilter">
+            <p>{{item.Customer_Name}}</p>
+        </md-list-item>
+    </div>
+</md-content>
+
+<md-dialog-actions layout="row">
+    <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+        <div flex="50" flex-xs="100" layout="column" layout-align="center center"></div>
+        <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+            <md-button ng-click="vm.ClosemdDialog()" class="md-default md-raised" md-ripple-size="auto" aria-label="Close Contact Form">
+                <md-icon md-font-icon="fa fa-times"></md-icon>
+                <label class="rxp-margin-left-med rxp-margin-right-med">close</label>
+            </md-button>
+        </div>
+    </div>
+</md-dialog-actions>

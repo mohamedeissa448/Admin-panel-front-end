@@ -1,0 +1,38 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">Edit Company</h3>
+    <form name="vm.editCompanyForm" novalidate  ng-submit="vm.editCompanyForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Company Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Company.Company_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Telephone</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.Company.Company_Telephone"required></textarea>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Website</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Company.Company_WebSite" >
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Email</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.Company.Company_Email"></textarea>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Info</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.Company.Company_Info"></textarea>
+        </md-input-container>
+        
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Update</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

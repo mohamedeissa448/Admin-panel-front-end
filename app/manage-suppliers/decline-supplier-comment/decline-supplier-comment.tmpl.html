@@ -1,0 +1,30 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Data Quality Check for Supplier: {{vm.SupplierName}}</h3>
+        <md-button
+            class="md-icon-button rxp-close-popup-btt"
+            md-ripple-size="auto"
+            aria-label="Close"
+            ng-click="vm.CloseForm()"
+        >
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page" ng-show="!vm.isLoading">
+  <textarea rows="4" ng-model="vm.Decline_Comment"style="display: block; margin: auto;width: 60%;"></textarea>
+  <div class="rxp-margin-top-larg nono-centered-container">
+    <h4>Commented By: {{vm.DeclinedUser.User_Name}}</h4>
+  </div>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear
+                class="margin-bottom-20"
+                md-mode="indeterminate"
+            ></md-progress-linear>
+        </div>
+    </div>
+</md-content>

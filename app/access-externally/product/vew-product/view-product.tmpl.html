@@ -1,0 +1,514 @@
+<md-card class="rxp-external-access-form">
+    <md-toolbar class="padding-20 text-center">
+        <img ng-src="{{::vm.triSettings.logo}}" alt="{{vm.triSettings.name}}">
+        <h1 class="md-headline" translate>Highchem System</h1>
+        <span class="rxp-sub-title">View Product</span>
+        <md-button class="md-icon-button print-btn" ng-click="vm.printClick()" aria-label="print">
+            <md-icon md-font-icon="zmdi zmdi-print"></md-icon>
+        </md-button>
+    </md-toolbar>
+    <md-content class="md-padding" ng-if="!vm.isLoding">
+        <md-dialog-content class="md-dialog-content">
+            <div class="margin-bottom-10">
+
+                <table class="order-dialog-product-table md-table" id='ProductDitailsTable'>
+                    <thead>
+                        <tr>
+                            <th class="md-cell md-binding font-weight-800 product-info" flex="30">Product Details</th>
+                            <th class="" flex="65">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-hide="vm.data.Product_Name == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Name :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Name}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Chemical_Name == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Chemical Name :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Chemical_Name}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Code == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Code :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Code}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Assay[0] == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Assay :</td>
+                            <td class="" flex="65">{{vm.data.Product_Assay[0]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.country == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Country :</td>
+                            <td class="" flex="65">{{::vm.data.country.Country_Name}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_CAS_Number == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> CAS Number :</td>
+                            <td class="" flex="65">{{::vm.data.Product_CAS_Number}}</td>
+                        </tr>
+                       
+                        <!--     Start  Of    Appearance-->
+                        <tr ng-hide="vm.data.productform == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Form :</td>
+                            <td class="" flex="65">{{::vm.data.productform.Form_Name}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.productpacking == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Packing :</td>
+                            <td class="" flex="65">{{::vm.data.productpacking.Packing_Name}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Appearance == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Appearance :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Appearance}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.productstrage == null || vm.data.productstrage.length ==0">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Storage :</td>
+                            <td class="" flex="65">{{::vm.data.productstrage[0].StorageType_Name}}</td>
+                        </tr>
+                        <!--     end  Of    Appearance-->
+                        <!--     Start  Of    physical data-->
+                        <tr ng-hide="vm.data.Product_Active_Content == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Active Content :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Active_Content}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Sp_gravity == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Sp gravity :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Sp_gravity}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_pH == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> pH :</td>
+                            <td class="" flex="65">{{::vm.data.Product_pH}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Relative_Density_From == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Relative Density From :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Relative_Density_From}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Relative_Density_To == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Relative Density To :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Relative_Density_To}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Hazen_color == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Hazen color :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Hazen_color}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Viscosity == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Viscosity :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Viscosity}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Heavy_Metals == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Heavy Metals :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Heavy_Metals}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Bulk_Density_From == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Bulk Density From :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Bulk_Density_From}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Bulk_Density_to == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Bulk Density to :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Bulk_Density_to}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Water_Insoluble_Matter == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Water Insoluble Matter :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Water_Insoluble_Matter}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Volatile_Matter == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Volatile Matter :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Volatile_Matter}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Relative_Index == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Relative Index :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Relative_Index}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Foriein_Matter == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Foreign Matter :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Foriein_Matter}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Impurities_Related_Substance == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Impurities Related Substance :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Impurities_Related_Substance}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Boiling_Point == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Boiling Point :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Boiling_Point}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Melting_Point == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Melting Point :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Melting_Point}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Water_Content == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Water Content :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Water_Content}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Weight_Unit_Code == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Weight Unit Code :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Weight_Unit_Code}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Weight_Value == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Weight Value :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Weight_Value}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Concentration_Unit_Code == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Concentration Unit Code :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Concentration_Unit_Code}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Concentration_Value == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Concentration Value :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Concentration_Value}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Loss_On_Drying == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Loss On Drying :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Loss_On_Drying}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Solubility == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Solubility :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Solubility}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Residual_On_Solvent == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Residual On Solvent :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Residual_On_Solvent}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Residue_On_Sieve == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Residue On Sieve :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Residue_On_Sieve}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Absorbance == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Product Absorbance :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Absorbance}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_InfraRed_Absorption == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> InfraRed Absorption :</td>
+                            <td class="" flex="65">{{::vm.data.Product_InfraRed_Absorption}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Sulfur_Dioxides_Residual == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Sulfur Dioxides Residual :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Sulfur_Dioxides_Residual}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Partical_Size == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Partical Size :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Partical_Size}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Non_Volatyl_Reside == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Non Volatyl Reside :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Non_Volatyl_Reside}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Think_Layer_Chromatography == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Think Layer Chromatography :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Think_Layer_Chromatography}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Specific_Surface_Area == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Specific Surface Area :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Specific_Surface_Area}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Starch_Test == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Starch Test :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Starch_Test}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Spescific_Opticical_Rotation == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Spescific Opticical Rotation :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Spescific_Opticical_Rotation}}</td>
+                        </tr>
+                        <!--     end  Of    physical data-->
+                        <!--     start  Of    chemical data-->
+                        <tr ng-hide="vm.data.Product_Molecular_Formula == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Molecular Formula :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Molecular_Formula}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Molecular_Weight == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Molecular Weight :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Molecular_Weight}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Alumumium_Al2O3 == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Alumumium Al2O3 :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Alumumium_Al2O3}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Titanicum_Tio2 == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Titanicum Tio2 :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Titanicum_Tio2}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Organic_Compounds == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Organic Compounds :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Organic_Compounds}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Free_Fatty_Acids == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Free Fatty Acids :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Free_Fatty_Acids}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Chloride == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Chloride :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Chloride}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Peroxide_Value == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Peroxide Value :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Peroxide_Value}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Iron == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Iron :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Iron}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Iodine_Value == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Iodine Value :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Iodine_Value}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Phosphorous_Acid == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Phosphorous Acid :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Phosphorous_Acid}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Acetone == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Acetone :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Acetone}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_O_phosphate == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> O phosphate :</td>
+                            <td class="" flex="65">{{::vm.data.Product_O_phosphate}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Methanol == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Methanol :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Methanol}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Sulphates == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Sulphates :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Sulphates}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Hydroyl_Number == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Hydroyl Number :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Hydroyl_Number}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Arsenic == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Arsenic :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Arsenic}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Aldehyles == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Aldehyles :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Aldehyles}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Lead == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Lead :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Lead}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Esters == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Esters :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Esters}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Mercury == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Mercury :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Mercury}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Chlorenated_Compound == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Chlorenated Compound :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Chlorenated_Compound}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Cadmium == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Cadmium :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Cadmium}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Antimony == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Antimony :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Antimony}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Ferrous_Fe2o3 == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Ferrous Fe2o3 :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Ferrous_Fe2o3}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Maliec_Acid == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Maliec Acid :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Maliec_Acid}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Chrome == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Chrome :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Chrome}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Ash == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Ash :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Ash}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Selenium == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Selenium :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Selenium}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Protien == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Protien :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Protien}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Nickel == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Nickel :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Nickel}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Nitrates == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Nitrates :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Nitrates}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Copper == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Copper :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Copper}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Aflatoxine == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Aflatoxine :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Aflatoxine}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Oxalic_Acid == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Oxalic Acid :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Oxalic_Acid}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Melamine == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Melamine :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Melamine}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Fumaric_Acid == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Fumaric Acid :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Fumaric_Acid}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Free_Halogens == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Free Halogens :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Free_Halogens}}</td>
+                        </tr>
+                        <!--     end  Of    chemical data-->
+                        
+                        <!--     start  Of    Microbology data-->
+                        <tr ng-hide="vm.data.Product_Remarkes == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Remarkes :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Remarkes}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Total_Plate_Count == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Total Plate Count :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Total_Plate_Count}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_EColi == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> EColi :</td>
+                            <td class="" flex="65">{{::vm.data.Product_EColi}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Yeast == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Yeast :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Yeast}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Mould == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Mould :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Mould}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Pathogenic_Bacterium == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Pathogenic Bacterium :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Pathogenic_Bacterium}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Escherichia_Cali == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Escherichia Cali :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Escherichia_Cali}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Salmonila == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Salmonila :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Salmonila}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Staphyloccuse_Aureus == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> Staphyloccuse Aureus :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Staphyloccuse_Aureus}}</td>
+                        </tr>
+                        <!--     end  Of    Microbology data-->
+                         <!--     start  Of    other data-->
+                         <!-- 
+                             <tr ng-hide="vm.data.Product_Extra1 == null">
+                               <td class="rxp-product-info-extra" flex="100"  colspan="2">{{::vm.data.Product_Extra1}}</td>
+                            </tr>
+                         -->
+                        <tr ng-hide="vm.data.Product_Extra1 == null || vm.data.Product_Extra1 ==''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra1.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra1.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra2 == null ||vm.data.Product_Extra2 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra2.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra2.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra3 == null || vm.data.Product_Extra3 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra3.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra3.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra4 == null || vm.data.Product_Extra4 ==''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra4.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra4.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra5 == null || vm.data.Product_Extra5=='' ">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra5.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra5.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra6 == null || vm.data.Product_Extra6 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra6.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra6.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra7 == null || vm.data.Product_Extra7 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra7.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra7.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra8 == null || vm.data.Product_Extra8 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra8.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra8.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra9 == null || vm.data.Product_Extra9 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra9.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra9.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra10 == null || vm.data.Product_Extra10 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra10.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra10.split(':')[1]}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.Product_Extra11 == null || vm.data.Product_Extra11 == ''">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30"> {{::vm.data.Product_Extra11.split(':')[0]}} :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Extra11.split(':')[1]}}</td>
+                        </tr>
+                        
+                         <!--     end  Of    other data-->   
+                        
+                        <tr ng-hide="vm.data.Product_Certification == false">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Product Certification :</td>
+                            <td class="" flex="65">
+                                <div class="array-repeat" ng-repeat='x in vm.data.Product_Certification'>{{x}}</div>
+                            </td>
+                            <!-- <td class="" flex="65"><span ng-repeat='x in vm.data.Product_Certification'></span>{{::vm.data.Product_Certification}}</td> -->
+                        </tr>
+                     
+                        <tr ng-hide="vm.data.Product_Classes_Code == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Product Classes Code :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Classes_Code}}</td>
+                        </tr>
+                        
+                        <!-- <tr ng-hide="vm.data.Product_Customer_Codes == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Product Customer Codes :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Customer_Codes}}</td>
+                        </tr> -->
+                      
+                        
+
+     
+                    
+                        <!-- <tr ng-hide="vm.data.Product_Supplier_Codes == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Product Supplier Codes :</td>
+                            <td class="" flex="65">{{::vm.data.Product_Supplier_Codes}}</td>
+                        </tr> -->
+                        
+                        
+                        <tr ng-hide="vm.data.productrelease == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">product Release :</td>
+                            <td class="" flex="65">{{::vm.data.productrelease.ReleaseType_Code}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.productclass == null">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">product Class :</td>
+                            <td class="" flex="65">{{::vm.data.productclass.Class_Name}}</td>
+                        </tr>
+                        
+                        <tr ng-hide="vm.data.concentration == null || vm.data.concentration.length ==0 ">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">concentration :</td>
+                            <td class="" flex="65">{{::vm.data.concentration[0].Concentration_Name}}</td>
+                        </tr>
+                        
+                        <tr ng-hide="vm.data.weight == null || vm.data.weight.length ==0">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Weight :</td>
+                            <td class="" flex="65">{{::vm.data.weight[0].Weight_Name}}</td>
+                        </tr>
+                        <tr ng-hide="vm.data.productcategory == null || vm.data.productcategory.length ==0 " ng-repeat="category in vm.data.productcategory">
+                            <td class="md-cell md-binding font-weight-600 product-info" flex="30">Product Category :</td>
+                            <td class="" flex="65">{{category.ProductCategory_Name}}</td>
+                        </tr>
+                </table>
+            </div>
+        </md-dialog-content>
+    </md-content>
+    <md-content class="md-padding" ng-if="vm.isLoding">
+        <div layout="row" layout-xs="column">
+            <div flex="100" flex-xs="100" class="rxp-normal-hight-container" layout="column" layout-align="center center">
+                <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+            </div>
+        </div>
+    </md-content>
+</md-card>

@@ -1,0 +1,26 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">Edit Origin Variant</h3>
+    <form name="vm.editOriginVariantForm" novalidate  ng-submit="vm.editOriginVariantForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Origin Variant Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.OriginVariant.ProductOrigin_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+                <label>Description</label>
+                <md-icon md-font-icon="fa fa-bars"></md-icon>
+                <textarea type="text" ng-model="vm.OriginVariant.ProductOrigin_Description"></textarea>
+            </md-input-container>
+        <md-switch class="md-primary" ng-model="vm.OriginVariant.ProductOrigin_IsActive" aria-label="Origin Variant Status" 
+            ng-init="switches.primary = false">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>Origin Variant Status
+        </md-switch>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

@@ -1,0 +1,56 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Edit Allowed Customers for {{vm.UserData.User_Name}}</h3>
+        <md-button class="md-icon-button rxp-close-popup-btt" md-ripple-size="auto" 
+            aria-label="Close" ng-click="vm.ConfirmCloseDialog()">
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page" ng-if="!vm.isLoading">
+    <form name="vm.allowedCustomerdForm" novalidate  ng-submit="vm.allowedCustomerdForm.$valid && vm.SubmitData()">
+        <md-switch class="md-primary" ng-model="vm.UserData.User_Access_All_Customers" aria-label="Supplier Status" 
+            ng-init="switches.primary=false" ng-change="vm.AllowedAllCustomerChanged()">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>User Can Access All Customers
+        </md-switch>
+        <br>
+        <md-input-container ng-if="!vm.UserData.User_Access_All_Customers" class="md-block md-icon-left">
+            <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+            <label>Allowed Customers *</label>
+            <md-chips ng-model="vm.selectedCustomers" md-autocomplete-snap
+                    md-transform-chip="vm.transformChip($chip)"
+                    md-require-match="true" min-items="1">
+                <md-autocomplete
+                    md-selected-item="vm.selectedCustomerItem"
+                    md-search-text="vm.searchCustomerText"
+                    md-items="customeritem in vm.queryCustomer(vm.searchCustomerText)"
+                    md-item-text="customeritem.Customer_Name"
+                    placeholder="Allowed Customers">
+                    <span md-highlight-text="vm.searchCatText">{{customeritem.Customer_Name}}</span>
+                </md-autocomplete>
+                <md-chip-template>
+                    <span>
+                    <strong>{{$chip.Customer_Name}}</strong>
+                    <em class="rxp-chip-subtitle">code: ({{$chip.Customer_Code}})</em>
+                    </span>
+                </md-chip-template>
+            </md-chips>
+        </md-input-container>
+        <p ng-if="vm.customerError">Please select one or more customer(s)</p>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>

@@ -1,0 +1,58 @@
+<md-content class="padded-content-page">
+    <div class="row">
+      <div
+        flex="100"
+        flex-xs="100"
+        layout="row"
+        class="rxp-search-by-radio-selection"
+      >
+        Search By :
+        <div flex="50" flex-xs="100" layout="column" layout-padding style="height: 55px;">
+            <md-input-container flex="100" class="md-block">
+              <label translate="Select Decrease date"></label>
+              <md-datepicker
+                ng-model="vm.DecreaseInventory_Date"
+                flex="100"
+                flex-xs="100"
+                md-placeholder="Select Decrease Inventory date"
+                class="rxp-normal-date-piker-width"
+              >
+              </md-datepicker>
+            </md-input-container>
+          </div>
+
+      </div>
+    </div>
+    <div layout="row" class="rxp-margin-top-medium" layout-xs="column">
+      <div flex="75" flex-xs="100" layout="column">
+        <form ng-submit="vm.SubmitSearch()">
+          <md-input-container
+            class="md-block rxp-search-text-box-large rxp-no-margin"
+          >
+            <label>Search By  Date</label>
+            <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+            <input type="text" ng-model="vm.PurchasingSearch" />
+          </md-input-container>
+          <md-button
+            type="submit"
+            class="md-primary md-raised rxp-search-btt rxp-no-margin-btt"
+            md-ripple-size="auto"
+            aria-label="Submit"
+          >
+            <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+          </md-button>
+        </form>
+      </div>
+    <div flex="25" flex-xs="100" layout="column" >
+        <div class="rxp-right-container">
+            <md-button ng-click="vm.showAddDecreaseInventory()" class="md-primary md-raised rxp-search-btt rxp-no-margin-btt"
+                md-ripple-size="auto" aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-collection-plus"></md-icon>
+            </md-button>
+        </div>
+    </div>
+</div>
+
+<div id="jsGrid"></div>
+</md-content>

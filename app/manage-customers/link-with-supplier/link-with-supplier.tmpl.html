@@ -1,0 +1,44 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Customer - {{vm.Customer_Name}}</h3>
+        <md-button class="md-icon-button rxp-close-popup-btt" md-ripple-size="auto" 
+            aria-label="Close" ng-click="vm.CloseForm()">
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page"  ng-show="!vm.isLoading">
+    <form name="vm.LinkSupplierForm" ng-submit="vm.LinkSupplierForm.$valid && vm.SubmitRequest()">
+    <md-autocomplete required
+        md-items="item in vm.searchForSupplier(vm.searchText)" 
+        md-search-text="vm.searchText"
+        md-item-text="item.Supplier_Name"   
+        md-selected-item="vm.selectedSupplier"
+        md-no-cache="false"
+        md-floating-label="Select Supplier">
+        <md-item-template>
+            <span md-highlight-text="vm.searchText">{{item.Supplier_Name}}</span>
+        </md-item-template>
+        <md-not-found>
+            No customer matching "{{vm.searchText}}" were found.
+        </md-not-found>
+    </md-autocomplete>
+    <div class="rxp-error" ng-show="vm.noItemSelected"> Please Select Supplier </div>
+    <div class="rxp-margin-top-xlarg" layout="row" layout-xs="column">
+        <div flex="100" flex-xs="100" layout="column" layout-align="center center">
+            <md-button type="submit"  class="md-primary md-raised" md-ripple-size="auto" 
+                aria-label="Submit">
+                <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+                <label translate="Link Supplier With Customer"></label>
+            </md-button>
+        </div>
+    </div>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>

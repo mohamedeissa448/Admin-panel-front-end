@@ -1,0 +1,96 @@
+<md-content class="padded-content-page">
+        <div class="row">
+          <div
+            flex="100"
+            flex-xs="100"
+            layout="row"
+            class="rxp-search-by-radio-selection"
+          >
+            Search By :
+            <md-radio-group
+              class="md-primary"
+              ng-model="vm.selectSearchType"
+              ng-init="vm.selectSearchType='Product_Name'"
+            >
+              <md-radio-button value="Product_Name"> Product Name</md-radio-button>
+              <md-radio-button value="Product_Code"> Product Code</md-radio-button>
+              <md-radio-button value="Customer_Name"> Customer Name</md-radio-button>
+              <md-radio-button value="Customer_Code"> Customer Code</md-radio-button>
+              <md-radio-button value="Product_Selling_Date"> Selling Date</md-radio-button>
+              <md-radio-button value="Product_OutGoing_Bill_Number"> Bill Number</md-radio-button>
+              <md-radio-button value="Product_OutGoing_Customer_Permission_Number"> Customer Permission Number</md-radio-button>
+              <md-radio-button value="Total_Price_After_Taxes"> Prices After Taxes</md-radio-button>
+              
+            </md-radio-group>
+          </div>
+        </div>
+        <div layout="row" class="rxp-margin-top-medium" layout-xs="column">
+          <div flex="75" flex-xs="100" layout="column">
+            <form ng-submit="vm.SubmitSearch()">
+              <md-input-container
+                class="md-block rxp-search-text-box-large rxp-no-margin"
+              >
+                <label>Search By  {{ vm.selectSearchType }}</label>
+                <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+                <input type="text" ng-model="vm.SellingSearch" />
+              </md-input-container>
+              <md-button
+                type="submit"
+                class="md-primary md-raised rxp-search-btt rxp-no-margin-btt"
+                md-ripple-size="auto"
+                aria-label="Submit"
+              >
+                <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+              </md-button>
+              <!--start print -->
+          <span style="left: 9em;position: relative;bottom: 2em;">
+            <md-button class="md-icon-button print-btn" ng-click="vm.printData()" aria-label="print" >
+                <md-icon md-font-icon="zmdi zmdi-print"></md-icon>
+            </md-button>
+          </span>
+           <!-- end print -->
+            </form>
+          </div>
+        <div flex="25" flex-xs="100" layout="column">
+            <div class="rxp-right-container">
+                <md-button ng-click="vm.showAddSale()" class="md-primary md-raised rxp-search-btt rxp-no-margin-btt"
+                    md-ripple-size="auto" aria-label="Submit">
+                    <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                    <md-icon md-font-icon="zmdi zmdi-collection-plus"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <!--start letters-->
+    <div class="rxp-filter-alphabet-container">
+      <md-button
+        class="md-primary md-default rxp-filter-alphabet"
+        ng-repeat="letter in vm.alphabetArray"
+        aria-label="filter by letter {{letter}}"
+        onclick="checkedFilter(this)"
+        ng-click="vm.retriveSales(letter)"
+      >
+        {{letter}}
+      </md-button>
+      <md-button
+        class="md-primary md-default rxp-filter-alphabet"
+        aria-label="ASC"
+        ng-click="vm.ASC_Order()"
+      >
+        ASC
+      </md-button>
+      <md-button
+      class="md-primary md-default rxp-filter-alphabet"
+      aria-label="ASC"
+      ng-click="vm.DESC_Order()"
+    >
+      DES
+    </md-button>
+      <md-progress-linear
+        ng-if="vm.isLoading"
+        md-mode="indeterminate"
+      ></md-progress-linear>
+    </div>
+     <!--end letters-->
+    <div id="jsGrid"></div>
+</md-content>

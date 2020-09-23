@@ -1,0 +1,90 @@
+<md-content class="padded-content-page" ng-model='vmr.ViewDetailsWindow'>
+
+    <md-content class="md-padding">
+        <div layout="row" layout-xs="column" class="hcm-contact-grid-header jsgrid-header-row">
+            <div class="jsgrid-header-cell" flex="25" flex-xs="50" layout="column" layout-align="center start">
+                Product
+            </div>
+            <div class="jsgrid-header-cell" flex="15" flex-xs="50" layout="column" layout-align="center start">
+                Required Quantity
+            </div>
+            <div class="jsgrid-header-cell" flex="15" flex-xs="50" layout="column" layout-align="center start">
+                Avilable Quantity
+            </div>
+            <div class="jsgrid-header-cell" flex="15" flex-xs="50" layout="column" layout-align="center start">
+                Price
+            </div>
+            <div class="jsgrid-header-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+                note
+            </div>
+        </div>
+        <div layout="row" layout-xs="column" class="jsgrid-row" ng-repeat="productRequest in vmr.requestPriceData.Details">
+            <div class="jsgrid-cell" flex="25" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Product_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="15" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Quantity_Required}} {{productRequest.Weight_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="15" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Quantity_Available}}
+            </div>
+            <div class="jsgrid-cell" flex="15" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Price}}
+            </div>
+            <div class="jsgrid-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+                {{productRequest.Note}}
+            </div>
+        </div>
+
+        <div layout="row" layout-xs="column" class="requestculomn">
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Place of Delivery : </label>
+                 <span>{{vmr.requestPriceData.Place_of_Delivery}}</span>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Delivery Time : </label> 
+                <span>{{vmr.requestPriceData.Delivery_Time}}</span>
+            </div>
+        </div>
+        <md-divider></md-divider>
+
+        <div layout="row" layout-xs="column" class="requestculomn">
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Method of Payment : </label> <span>
+                    {{vmr.requestPriceData.Method_of_Payment}}</span>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Taxes Types : </label> <span>
+                    {{vmr.requestPriceData.Taxes_Types}}</span>
+            </div>
+        </div>
+        <md-divider></md-divider>
+
+        <div layout="row" layout-xs="column" class="requestculomn">
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Delivery Cost : </label> <span>
+                    {{vmr.requestPriceData.Delivery_Cost}}</span>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Work Time Off : </label> <span>
+                    {{vmr.requestPriceData.Work_Time_Off}}</span>
+            </div>
+        </div>
+        <md-divider></md-divider>
+
+        <div layout="row" layout-xs="column" class="requestculomn">
+            <div flex="50" flex-xs="100" layout="column" layout-align="left start">
+                <label class="font-weight-600">Work Time Off : </label> <span> {{vmr.requestDateString}}</span>
+            </div>
+        </div>
+
+    </md-content>
+
+    <div class="nono-centered-container">
+        <md-button ng-click="vmr.CloseDetailsWindow()" class="md-primary md-raised" md-ripple-size="auto" aria-label="Close Contact Form">
+            <md-icon md-font-icon="fa fa-times"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med">close</label>
+        </md-button>
+    </div>
+
+</md-content>

@@ -1,0 +1,74 @@
+<md-content class="padded-content-page">
+    <div class="row">
+      <div
+        flex="100"
+        flex-xs="100"
+        layout="row"
+        class="rxp-search-by-radio-selection"
+      >
+        Search By :
+        <div flex="50" flex-xs="100" layout="column" layout-padding style="height: 55px;">
+            <md-input-container flex="100" class="md-block">
+              <label translate="Select Bill date"></label>
+              <md-datepicker
+                ng-model="vm.Bill_Date"
+                flex="100"
+                flex-xs="100"
+                md-placeholder="Select Bill date"
+                class="rxp-normal-date-piker-width"
+              >
+              </md-datepicker>
+            </md-input-container>
+          </div>
+
+      </div>
+    </div>
+    <div layout="row" class="rxp-margin-top-medium" layout-xs="column">
+      <div flex="75" flex-xs="100" layout="column">
+        <form ng-submit="vm.SubmitSearch()">
+          <md-input-container class="md-block md-icon-left">
+            <md-icon md-font-icon="zmdi zmdi-truck" class="chips-icon"></md-icon>
+            <label>Select Supplier</label>
+            <md-chips ng-model="vm.selectedSuppliers" md-autocomplete-snap
+                    md-transform-chip="vm.transformChip($chip)"
+                    md-require-match="true" min-items="1" md-max-chips="1" ng-required="true">
+                <md-autocomplete
+                    md-selected-item="vm.selectedSupplierItem"
+                    md-search-text="vm.searchSupplierText"
+                    md-items="supplieritem in vm.querySuppliers(vm.searchSupplierText)"
+                    md-item-text="supplieritem.Supplier_Name"
+                    placeholder="Supplier">
+                    <span md-highlight-text="vm.searchSupplierText">{{supplieritem.Supplier_Name}}</span>
+                </md-autocomplete>
+                <md-chip-template>
+                    <span>
+                    <strong>{{$chip.Supplier_Name}}</strong>
+                    <em class="rxp-chip-subtitle">code: ({{$chip.Supplier_Code}})</em>
+                    </span>
+                </md-chip-template>
+            </md-chips>
+            <md-button
+            type="submit"
+            class="md-primary md-raised rxp-search-btt rxp-no-margin-btt"
+            md-ripple-size="auto"
+            aria-label="Submit"
+          >
+            <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+          </md-button>
+        </md-input-container>
+          
+        </form>
+      </div>
+    <div flex="25" flex-xs="100" layout="column" >
+        <div class="rxp-right-container">
+            <md-button ng-click="vm.showAddSupplierBill()" class="md-primary md-raised rxp-search-btt rxp-no-margin-btt"
+                md-ripple-size="auto" aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-collection-plus"></md-icon>
+            </md-button>
+        </div>
+    </div>
+</div>
+
+<div id="jsGrid"></div>
+</md-content>

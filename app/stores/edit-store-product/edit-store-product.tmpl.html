@@ -1,0 +1,295 @@
+
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-toolbar">
+    <h3 class="center-text">Edit Store Product:{{vm.itemToEdit.Product_Name}} ,Code:{{vm.itemToEdit.Product_Code}}</h3>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="vm.CloseStoreProduct()">
+      <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+  <form name="vm.SendOrderForm" ng-submit=" vm.SubmitStoring()">
+    <div layout="row" layout-fill>
+      <div flex="50" flex-xs="100" layout="column" layout-padding>
+        <md-input-container flex="100" class="md-block">
+          <label translate="Select storing date"></label>
+          <md-datepicker
+            ng-model="vm.ProductStore.Product_Storing_Date"
+            flex="100"
+            flex-xs="100"
+            md-placeholder="Select storing date"
+            class="rxp-normal-date-piker-width"
+          >
+          </md-datepicker>
+        </md-input-container>
+      </div>
+       <!-- start select products-->
+       <div flex="55" flex-xs="100" layout="column" layout-padding>
+        <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+          <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+          <label class="rxp-supplier-chips-lable">Select Product</label>
+          <md-chips ng-model="vm.selectedProducts" md-autocomplete-snap
+                  md-transform-chip="vm.transformChip($chip)"
+                  md-require-match="true" min-items="1" ng-required="true"
+                  md-max-chips="1">
+              <md-autocomplete
+                  md-selected-item="vm.selectedProductItem"
+                  md-search-text="vm.searchProductText"
+                  md-items="productitem in vm.queryProducts(vm.searchProductText)"
+                  md-item-text="productitem.Product_Name"
+                  placeholder="Product">
+                  <span md-highlight-text="vm.searchProductText">{{productitem.Product_Name}}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                  <span>
+                  <strong>{{$chip.Product_Name}}</strong>
+                  <em class="rxp-chip-subtitle">code: ({{$chip.Product_Code}})</em>
+                  </span>
+              </md-chip-template>
+          </md-chips>
+      </md-input-container>
+      </div>
+      <!-- end select products-->
+      <div flex="50" flex-xs="100" layout="column" layout-padding>
+        <md-input-container flex="100" class="md-block">
+          <label>Purchasing Date</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input  ng-model="vm.selectedProducts[0].Product_Purchasing_Date| date:'dd MMMM yyyy'" style="width:80%" disabled>
+        </md-input-container>
+      </div>
+     
+      <!-- start select suppliers-->
+      <div flex="50" flex-xs="100" layout="column" layout-padding>
+        <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+          <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+          <label class="rxp-supplier-chips-lable">Supplier Name</label>
+          <input type="text" ng-model="vm.selectedProducts[0].Supplier_Name"disabled required>
+      </md-input-container>
+      <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+        <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+        <label class="rxp-supplier-chips-lable">Supplier Code</label>
+        <input type="text" ng-model="vm.selectedProducts[0].Supplier_Code"disabled required>
+    </md-input-container>
+      </div>
+      <!-- end select suppliers-->
+      
+    </div>
+    <div layout="row" layout-xs="column">
+      <div  flex="45" flex-xs="100" layout="column">
+
+        <md-input-container class="md-block">
+          <label>Manufacturer Name</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input type="text" ng-model="vm.selectedProducts[0].Product_Manufacturer_Name"disabled required>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>Manufacturer Code</label>
+        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+        <input type="text" ng-model="vm.selectedProducts[0].Product_Manufacturer_Code"disabled>
+      </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Batch Number</label>
+            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+            <input type="text" ng-model="vm.selectedProducts[0].Product_BatchNumber"disabled>
+        </md-input-container>
+        <md-input-container class="rxp-full-width" style="margin-top: 2em;">
+          <label>Expiration Date</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input  ng-model="vm.selectedProducts[0].Product_Date_Of_Expiration| date:'dd MMMM yyyy'" style="width:80%" disabled>
+
+      </md-input-container>
+          <md-input-container
+          md-no-float
+          class="md-block hcm-Amount-number-field"
+        >
+          <label>Weight Of Package</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="number" step="1" ng-model="vm.selectedProducts[0].Product_Package_Weight" disabled/>
+        </md-input-container>
+      </div>
+      <div  flex="10" flex-xs="100" layout="column">
+      </div>
+      <div  flex="45" flex-xs="100" layout="column">
+          <md-input-container class="rxp-full-width"">
+              <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+              <label class="rxp-margin-left-med">Country Of Origin</label>
+
+              <md-select placeholder="Country Of Origin"style="width:80%" ng-model="vm.selectedProducts[0].Product_Origin_Country_Code" disabled>
+                  <md-select-header>
+                      <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Countries List</span>
+                  </md-select-header>
+                  <md-option ng-repeat="x in vm.countries" value="{{x.Country_Code}}">
+                      {{x.Country_Name}}
+                  </md-option>
+              </md-select>
+          </md-input-container>
+          <md-input-container class="rxp-full-width" style="margin-top: 3em;">
+              <label>Production Date</label>
+              <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+              <input  ng-model="vm.selectedProducts[0].Product_Date_Of_Production| date:'dd MMMM yyyy'" style="width:80%" disabled>
+
+            </md-input-container>
+          <md-input-container class="rxp-full-width"style="margin-top: 2.5em;">
+            <md-icon
+            md-font-icon="fa fa-balance-scale"
+            class="chips-icon"
+          ></md-icon>
+          <label>Select Unit</label>
+          <md-select placeholder="Select Unit" ng-model="vm.selectedProducts[0].Product_Weight_Unit_Code"style="width:80%"disabled>
+            <md-option
+              ng-repeat="RequestWeight in vm.WeightUnitsList"
+              ng-value="{{RequestWeight.Weight_Code}}"
+            >
+              {{RequestWeight.Weight_Name}}
+            </md-option>
+          </md-select>
+          </md-input-container>
+          
+          <md-input-container class="md-block" style="margin-top: 4em;">
+              <label>Number Of Packages</label>
+              <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+              <input type="number" step="1" ng-model="vm.selectedProducts[0].Product_Number_Of_Packages" style="width:80%" disabled>
+          </md-input-container>
+
+          <md-input-container
+          md-no-float
+          class="md-block hcm-Amount-number-field"
+        >
+          <label>Quantity</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="number" step="1" ng-model="vm.selectedProducts[0].Product_Quantity" disabled/>
+        </md-input-container>
+
+      </div>
+  </div>
+
+    <md-subheader class="md-no-sticky">Bill</md-subheader>
+    <md-divider></md-divider>
+
+    <div layout="row" layout-xs="column">
+      <div  flex="45" flex-xs="100" layout="column" layout-align="center center">               
+          <md-switch class="md-primary" ng-model="vm.selectedProducts[0].Product_Incoming_Bill_Is_taxed" aria-label="Product Status" disabled
+              ng-init="vm.selectedProducts[0].Product_Incoming_Bill_Is_taxed = true">
+              <md-icon md-font-icon="zmdi zmdi-truck"></md-icon>Is Bill Taxed
+          </md-switch>
+      </div>
+     
+  </div>
+
+  <md-divider></md-divider>
+
+  <div layout="row" layout-xs="column">
+    <div  flex="45" flex-xs="100" layout="column">
+        <md-input-container class="md-block" ng-if="vm.logedUser.permissions.includes('can-see-bill number-in-store-form')">
+            <label>Bill Number</label>
+            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+            <input type="text" ng-model="vm.selectedProducts[0].Product_Incoming_Bill_Number" required disabled>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Supplier's Permission Of Reciving Number</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input type="text" ng-model="vm.selectedProducts[0].Product_Incoming_Supplier_Permission_Number"disabled>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>HighChem Permission Number</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input type="text" ng-model="vm.Product_Incoming_HighChem_Permission_Number"required>
+        </md-input-container>
+       
+     </div>
+  </div>  
+
+    <md-divider class="rxp-field-divider"></md-divider>
+    
+    <!-- start tabs --> 
+    <md-tabs class="rxp-product-tabs" md-dynamic-height md-border-bottom>
+       
+      <md-tab label="Extra Data">
+        <md-tab-label><md-icon md-font-icon="zmdi zmdi-flare"></md-icon> Extra Data</md-tab-label>
+        <md-tab-body>
+          <div layout="row" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Extra field 1</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.Extra1" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra field 2</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.Extra2" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra field 5</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.Extra5" >
+                </md-input-container>
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Extra field 3</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.Extra3" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra field 4</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.Extra4" >
+                </md-input-container>
+            </div>
+        </div>
+        </md-tab-body>
+    
+    </md-tab>
+    <md-tab label="">
+      <md-tab-body>
+          
+      </md-tab-body>
+  
+  </md-tab>
+    </md-tabs>
+    <!--end tabs-->
+    <md-dialog-actions layout="row">
+      <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-button
+            ng-click="vm.CloseStoreProduct()"
+            class="md-default md-raised"
+            md-ripple-size="auto"
+            aria-label="Close Store Form"
+          >
+            <md-icon md-font-icon="fa fa-times"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med"
+              >close</label
+            >
+          </md-button>
+        </div>
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-button
+            type="submit"
+            class="md-primary md-raised"
+            md-ripple-size="auto"
+            aria-label="Submit"
+          >
+            <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+            <label translate="Submit"></label>
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-content>

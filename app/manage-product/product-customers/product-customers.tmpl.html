@@ -1,0 +1,97 @@
+<md-content class="padded-content-page"  ng-show="!vm.isLoading">
+        <h3 class="center-text">Customer List For {{vm.Product_Name}}</h3>
+        <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+            <div flex="80" flex-xs="100" layout="column" class="">
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-accounts-alt" class="chips-icon"></md-icon>
+                    <label>Select Customer</label>
+                    <md-chips ng-model="vm.selectedCustomers" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedCustomerItem"
+                            md-search-text="vm.searchCustomerText"
+                            md-items="customeritem in vm.queryCustomers(vm.searchCustomerText)"
+                            md-item-text="customeritem.Customer_Name"
+                            placeholder="Customer">
+                            <span md-highlight-text="vm.searchCustomerText">{{customeritem.Customer_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.Customer_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.Customer_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+            </div>
+            <div flex="20" flex-xs="100" layout="column" layout-align="end end" class="hcm-add-contact-btt-container">
+                <md-button ng-click="vm.AddCustomer()" class="md-primary md-raised" md-ripple-size="auto" 
+                    aria-label="Submit">
+                    <md-icon md-font-icon="fa fa-arrow-down"></md-icon>
+                    <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                </md-button>
+            </div>
+        </div>
+        <md-divider class="rxp-margin-top-larg"></md-divider>
+        <div layout="row" layout-xs="column" class="hcm-contact-grid-header jsgrid-header-row">
+            <div class="jsgrid-header-cell" flex="25" flex-xs="50" layout="column" layout-align="center start">
+                Customer Code
+            </div>
+            <div class="jsgrid-header-cell" flex="70" flex-xs="50" layout="column" layout-align="center start">
+                Customer Name
+            </div>
+            <div class="jsgrid-header-cell" flex="5" flex-xs="50" layout="column" layout-align="center start">
+                
+            </div>
+        </div>
+        <md-divider></md-divider>
+        <span class="md-body-2 hcm-contact-no-data" ng-if="vm.Customers.length==0">No Customer Data Inserted</span>
+        <div layout="row" layout-xs="column" class="jsgrid-row" ng-repeat="customer in vm.Customers" >
+            <div class="jsgrid-cell" flex="25" flex-xs="30" layout="column" layout-align="center start">
+                {{::customer.Customer_Code}}
+            </div>
+            <div class="jsgrid-cell" flex="70" flex-xs="75" layout="column" layout-align="center start">
+                {{::customer.Customer_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="5" flex-xs="50" layout="column" >
+                <md-button ng-click="vm.DeleteCustomer(customer)" class="md-default hcm-ingrid-delete-btt" md-ripple-size="auto" 
+                    aria-label="Delete Customer">
+                    <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+                </md-button>
+            </div>
+        </div>
+        <div layout="row" layout-xs="column">
+            <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+                <md-button ng-click="vm.CloseCustomer()" class="md-default md-raised" md-ripple-size="auto" 
+                    aria-label="Close Supplier Form">
+                    <md-icon md-font-icon="fa fa-times"></md-icon>
+                    <label class="rxp-margin-left-med rxp-margin-right-med">Close</label>
+                </md-button>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+                <md-button ng-click="vm.SaveCustomer()" class="md-primary md-raised" md-ripple-size="auto" 
+                    aria-label="Save Customers">
+                    <md-icon md-font-icon="fa fa-floppy-o"></md-icon>
+                    <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                </md-button>
+            </div>
+            
+        </div>
+    
+    </md-content>
+    <md-content class="rxp-finish-message" ng-show="vm.isLoading">
+        <div class="rxp-finish-message-sub">
+            <div>
+                <h3>Loading...</h3>
+                <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+            </div>
+        </div>
+    </md-content>
+    <style>
+        md-dialog{
+            width: 99%;
+            max-width: 99%;
+        }
+    </style>
+    

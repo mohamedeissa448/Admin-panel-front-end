@@ -1,0 +1,241 @@
+<md-content class="padded-content-page" ng-show="!vm.isLoading">
+    <md-content class="padded-content-page">
+        <form name="vm.SendOrderForm" ng-submit=" vm.SubmitRequest()">
+          
+      
+          <h3>Documents for Product <span style="color:green;">{{vm.Product_Name}}</span></h3>
+          <md-divider></md-divider>
+      
+        <!--start add documents-->
+        <div>
+          <div
+layout="row"
+class="rxp-margin-top-medium hcm-contact-add-form"
+layout-xs="column"
+>
+<div
+flex="5"
+class="rxp-icon-container"
+flex-xs="100"
+layout="column"
+layout-padding
+>
+<md-icon md-font-icon="fa fa-dropbox"></md-icon>
+</div>
+<div flex="30" flex-xs="100" layout="column" class=""style="margin-top: 2em;">
+<input type = "file" file-model="files" />
+</div>
+<div flex="5" flex-xs="100" layout="column" class=""></div>
+
+<div flex="25" flex-xs="100" layout="column" class="">
+<md-input-container
+md-no-float
+class="md-block hcm-Amount-number-field"
+>
+<label>Descrption</label>
+<md-icon md-font-icon="fa fa-list-ol"></md-icon>
+<input type="text" ng-model="vm.Document_Description" />
+</md-input-container>
+</div>
+<div flex="25" flex-xs="100" layout="column" class="">
+<md-input-container
+md-no-float
+class="md-block hcm-Amount-number-field"
+>
+<label>End Date</label>
+<md-icon md-font-icon="fa fa-list-ol"></md-icon>
+<input type="text" ng-model="vm.Document_End_Date" />
+</md-input-container>
+</div>
+<div
+flex="15"
+flex-xs="100"
+layout="column"
+layout-align="end end"
+class="hcm-add-product-btt-container"
+>
+<md-button
+ng-click="vm.AddproductDocument()"
+class="md-primary md-raised"
+md-ripple-size="auto"
+aria-label="Submit"
+>
+<md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+<label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+</md-button>
+</div>
+</div>
+
+<md-divider class="rxp-margin-top-larg"></md-divider>
+<div
+layout="row"
+layout-xs="column"
+class="hcm-contact-grid-header jsgrid-header-row"
+>
+<div
+class="jsgrid-header-cell"
+flex="20"
+flex-xs="50"
+layout="column"
+layout-align="center start"
+>
+Document :
+</div>
+<div
+class="jsgrid-header-cell"
+flex="20"
+flex-xs="50"
+layout="column"
+layout-align="center start"
+>
+Description :
+</div>
+<div
+class="jsgrid-header-cell"
+flex="20"
+flex-xs="50"
+layout="column"
+layout-align="center start"
+>
+End Date
+</div>
+<div
+class="jsgrid-header-cell"
+flex="20"
+flex-xs="50"
+layout="column"
+layout-align="center start"
+>
+Show Documents
+</div>
+
+</div>
+<md-divider></md-divider>
+</div>
+<md-divider></md-divider>
+
+<div
+layout="row"
+layout-xs="column"
+class="jsgrid-row"
+ng-repeat="productDocument in vm.productDocuments"
+>
+<div
+  class="jsgrid-cell"
+  flex="20"
+  flex-xs="50"
+  layout="column"
+  layout-align="center start"
+>
+  {{productDocument.Document_Name}}
+</div>
+<div
+  class="jsgrid-cell"
+  flex="20"
+  flex-xs="50"
+  layout="column"
+  layout-align="center start"
+>
+  {{productDocument.Document_Description}}
+</div>
+<div
+  class="jsgrid-cell"
+  flex="20"
+  flex-xs="50"
+  layout="column"
+  layout-align="center start"
+>
+  {{productDocument.Document_End_Date}}
+</div>
+<div
+  class="jsgrid-cell"
+  flex="20"
+  flex-xs="50"
+  layout="column"
+  layout-align="center start"
+>
+  <a href="http://35.246.143.96:3111/documents/{{productDocument.Document_Url}}"
+  target="_blank"
+  ng-show="productDocument.Document_Url"
+  >Show Document</a>
+  <a type="button" href="http://35.246.143.96:3111/documents/{{productDocument.Document_Url}}"
+  download="DOWNLOAD"
+ng-show="productDocument.Document_Url"
+>Download</a>
+  <div ng-show="!productDocument.Document_Url"></div>
+</div>
+<div class="jsgrid-cell" flex="20" flex-xs="50" layout="column">
+  <md-button
+    ng-click="vm.DeleteRequest(productDocument)"
+    class="md-default hcm-ingrid-delete-btt"
+    md-ripple-size="auto"
+    aria-label="Delete Contact"
+  >
+    <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+  </md-button>
+</div>
+</div>
+
+      
+      <!--end add documents-->
+          <md-divider class="rxp-field-divider"></md-divider>
+          <md-dialog-actions layout="row">
+            <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+              <div
+                flex="50"
+                flex-xs="100"
+                layout="column"
+                layout-align="center center"
+              >
+                <md-button
+                  ng-click="vm.CloseUpdateDocuments()"
+                  class="md-default md-raised"
+                  md-ripple-size="auto"
+                  aria-label="Close Contact Form"
+                >
+                  <md-icon md-font-icon="fa fa-times"></md-icon>
+                  <label class="rxp-margin-left-med rxp-margin-right-med"
+                    >close</label
+                  >
+                </md-button>
+              </div>
+              <div
+                flex="50"
+                flex-xs="100"
+                layout="column"
+                layout-align="center center"
+              >
+                <md-button
+                  type="submit"
+                  class="md-primary md-raised"
+                  md-ripple-size="auto"
+                  aria-label="Submit"
+                >
+                  <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+                  <label translate="Upload Documents"></label>
+                </md-button>
+              </div>
+            </div>
+          </md-dialog-actions>
+        </form>
+      </md-content>
+      
+  </md-content>
+  <md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+      <div>
+        <h3>Loading...</h3>
+        <md-progress-linear
+          class="margin-bottom-20"
+          md-mode="indeterminate"
+        ></md-progress-linear>
+      </div>
+    </div>
+  </md-content>
+  <style>
+    md-dialog {
+      width: 99%;
+      max-width: 99%;
+    }
+  </style>
+  

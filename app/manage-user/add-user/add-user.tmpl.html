@@ -1,0 +1,35 @@
+<md-content class="padded-content-page">
+    <div layout="row" layout-align="center center">
+        <h2 class="md-display-3" translate>Add New User</h2>
+    </div>
+    <form name="vm.addUserForm" novalidate  ng-submit="vm.addUserForm.$valid && vm.SubmitData()">
+        <div layout="row" layout-fill >
+            <div  flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container class="md-block">
+                    <label translate="User Name"></label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.user.User_Name" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate="Password"></label>
+                    <md-icon md-font-icon="zmdi zmdi-key"></md-icon>
+                    <input type="password" ng-model="vm.user.User_Password" required>
+                </md-input-container>
+            </div> 
+            <div  flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container class="md-block">
+                    <label translate="User Display Name"></label>
+                    <md-icon md-font-icon="zmdi zmdi-account-box-o"></md-icon>
+                    <input type="text" ng-model="vm.user.User_DisplayName" required>
+                </md-input-container>
+            </div> 
+        </div>   
+        <div layout-align="center" class="nono-centered-container" layout-fill>
+                <md-button type="submit" class="md-primary md-raised nono-xlarg-button" layout-fill md-ripple-size="auto" 
+                    aria-label="Submit">
+                    <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+                    <label translate="Add User"></label>
+                </md-button>
+        </div> 
+    </form>
+</md-content>

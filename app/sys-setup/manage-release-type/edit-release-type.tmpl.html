@@ -1,0 +1,26 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">Edit Custom Release Type</h3>
+    <form name="vm.editCustomReleaseTypeForm" novalidate  ng-submit="vm.editCustomReleaseTypeForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Custom Release Type Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.ReleaseType.ReleaseType_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.ReleaseType.ReleaseType_Description"></textarea>
+        </md-input-container>
+        <md-switch class="md-primary" ng-model="vm.ReleaseTypeStatus" aria-label="Custom Release Type Status" 
+            ng-init="switches.primary = false">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>Custom Release Type Status
+        </md-switch>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

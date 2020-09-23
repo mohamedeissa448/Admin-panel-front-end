@@ -1,0 +1,22 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">add new Packing</h3>
+    <form name="vm.addPackingForm" novalidate  ng-submit="vm.addPackingForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Packing Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Packing.Packing_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+                <label>Description</label>
+                <md-icon md-font-icon="fa fa-bars"></md-icon>
+                <textarea type="text" ng-model="vm.Packing.Packing_Description"></textarea>
+            </md-input-container>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

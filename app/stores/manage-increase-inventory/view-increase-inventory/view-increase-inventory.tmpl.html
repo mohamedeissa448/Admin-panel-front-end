@@ -1,0 +1,181 @@
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-toolbar">
+    <h3 class="center-text"> Increase Inventory Details</h3>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="vm.CloseIncreaseInventory()">
+      <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+  <form name="vm.IncreaseInventoryForm" ng-submit=" vm.SubmitRequest()">
+    <div layout="row" layout-fill>
+      <div flex="45" flex-xs="45" layout="column">
+        <span class="history-data-title"
+          >Inserted Date :
+          <span class="history-data-value"
+            >{{ vm.IncreaseInventory_Date | date:'dd MMMM yyyy' }}</span
+          >
+        </span>
+        <span class="history-data-title"
+          >System Date :
+          <span class="history-data-value"
+            >{{ vm.IncreaseInventory_SysDate | date:'dd MMMM yyyy' }}</span
+          >
+        </span>
+        <span class="history-data-title"
+          >Done By :
+          <span class="history-data-value"
+            >{{ vm.IncreaseInventory_DoneBy_User.User_Name }}</span
+          >
+        </span>
+      </div>
+     
+      <div flex="45" flex-xs="45" layout="column">
+        <span class="history-data-title"
+          >Note:
+          <span class="history-data-value"
+            >{{ vm.IncreaseInventory_Note }}</span
+          >
+        </span>
+      </div>
+
+    </div>
+
+    <md-subheader class="md-no-sticky">Products</md-subheader>
+    <md-divider></md-divider>
+
+   
+    <md-divider class="rxp-margin-top-larg"></md-divider>
+    <div
+      layout="row"
+      layout-xs="column"
+      class="hcm-contact-grid-header jsgrid-header-row"
+    >
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Product :
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Origin Variant :
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Expiration Date
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Quantity
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Cost
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div
+      layout="row"
+      layout-xs="column"
+      class="jsgrid-row"
+      ng-repeat="increaseInventoryProduct in vm.IncreaseInventory_Products"
+    >
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{increaseInventoryProduct.Product.Product_Name}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{ increaseInventoryProduct.Origin_Variant.ProductOrigin_Name }}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{increaseInventoryProduct.Expiration_Variant | date:'dd MMMM yyyy'}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{increaseInventoryProduct.Quantity}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{increaseInventoryProduct.Cost}}
+      </div>
+
+    </div>
+    <md-divider class="rxp-field-divider"></md-divider>
+    <md-dialog-actions layout="row">
+      <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+          style="margin: auto;"
+        >
+          <md-button
+            ng-click="vm.CloseIncreaseInventory()"
+            class="md-default md-raised"
+            md-ripple-size="auto"
+            aria-label="Close Increase Inventory Details Form"
+          >
+            <md-icon md-font-icon="fa fa-times"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med"
+              >close</label
+            >
+          </md-button>
+        </div>
+
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-content>

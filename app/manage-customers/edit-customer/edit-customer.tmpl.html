@@ -1,0 +1,330 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Edit Customer - {{vm.CustomerData.Customer_Name}}</h3>
+        <md-button class="md-icon-button rxp-close-popup-btt" md-ripple-size="auto" 
+            aria-label="Close" ng-click="vm.CloseForm()">
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page"  ng-show="!vm.isLoading">
+    <form name="vm.EditCustomerForm" novalidate  ng-submit="vm.EditCustomerForm.$valid && vm.SubmitData()">
+        <div layout="row" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column"> 
+                <md-input-container class="md-block">
+                    <label>Customer Name</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.CustomerData.Customer_Name" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label for="email">Customer E-mail Address</label>
+                    <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+                    <input id="Customer_email" label="email" name="Customeremail" type="email" ng-model="vm.CustomerData.Customer_Email" required/>
+                    <div ng-messages="AddCustomerForm.Customeremail.$error" md-auto-hide="false" ng-show="AddCustomerForm.Customeremail.$touched">
+                        <div ng-message="required">
+                            Please enter email address.
+                        </div>
+                        <div ng-message="email">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container md-no-float class="md-block">
+                    <label>Telephone</label>
+                    <md-icon md-font-icon="zmdi zmdi-phone"></md-icon>
+                    <input type="text" ng-model="vm.CustomerData.Customer_Phone" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Address</label>
+                    <md-icon md-font-icon="zmdi zmdi-pin"></md-icon>
+                    <input type="text" ng-model="vm.CustomerData.Customer_Address">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Address GPS Location</label>
+                    <md-icon md-font-icon="zmdi zmdi-map"></md-icon>
+                    <input ng-model="vm.CustomerData.Customer_AddressGPSLocation" ng-pattern="/^(http|https|ftp)?(://)?(www|ftp)?.?[a-z0-9-]+(.|:)([a-z0-9-]+)+([/?].*)?$/" />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>City</label>
+                    <md-icon md-font-icon="zmdi zmdi-city-alt"></md-icon>
+                    <input type="text" ng-model="vm.CustomerData.Customer_City">
+                </md-input-container>
+                <md-input-container class="rxp-full-width"">
+                    <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+                    <label class="rxp-margin-left-med">Country</label>
+                    <md-select placeholder="Pick Country" ng-model="vm.CustomerData.Customer_Country_Code">
+                        <md-select-header>
+                            <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Countries List</span>
+                        </md-select-header>
+                        <md-option ng-repeat="x in vm.countries" value="{{x.Country_Code}}">
+                            {{x.Country_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Inventory Address</label>
+                    <md-icon md-font-icon="zmdi zmdi-pin"></md-icon>
+                    <input type="text" ng-model="vm.CustomerData.Customer_StoreAddress">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Inventory Address GPS Location</label>
+                    <md-icon md-font-icon="zmdi zmdi-map"></md-icon>
+                    <input ng-model="vm.CustomerData.Customer_StoreGPSLocation" ng-pattern="/^(http|https|ftp)?(://)?(www|ftp)?.?[a-z0-9-]+(.|:)([a-z0-9-]+)+([/?].*)?$/" />
+                </md-input-container>
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+                    <label>Select Industrial Categories *</label>
+                    <md-chips ng-model="vm.selectedCat" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedCatItem"
+                            md-search-text="vm.searchCatText"
+                            md-items="catitem in vm.queryCats(vm.searchCatText)"
+                            md-item-text="catitem.Category_Name"
+                            placeholder="Industrail Categories">
+                            <span md-highlight-text="vm.searchCatText">{{catitem.Category_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.Category_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.Category_ID}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                 <!-- start product categories -->
+                 <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Product Category(s)"</label>
+                    <md-chips id="ClassificationsChips" ng-model="vm.selectedProductCategories" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedProdCatItem"
+                            md-search-text="vm.searchProdCatText"
+                            md-items="ProdCatitem in vm.queryProdCats(vm.searchProdCatText)"
+                            md-item-text="ProdCatitem.ProductCategory_Name"
+                            placeholder="Product Category(s)">
+                            <span md-highlight-text="vm.searchProdCatText">{{ProdCatitem.ProductCategory_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.ProductCategory_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.ProductCategory_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <!-- end product categories -->
+                 <!-- start selling area-->
+                 <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Selling Area(s)"</label>
+                    <md-chips id="ClassificationsChips" ng-model="vm.selectedSellingAreas" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedSeelAreaItem"
+                            md-search-text="vm.searchSeelAreaText"
+                            md-items="SeelAreaitem in vm.querySeelAreas(vm.searchSeelAreaText)"
+                            md-item-text="SeelAreaitem.ProductCategory_Name"
+                            placeholder="Selling Area(s)">
+                            <span md-highlight-text="vm.searchSeelAreaText">{{SeelAreaitem.SellingArea_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.SellingArea_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.SellingArea_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <!--end selling area-->
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-traffic" class="chips-icon"></md-icon>
+                    <label>Customer Business Type</label>
+                    <md-chips ng-model="vm.selectedSupplierTypes" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedSupplTypeItem"
+                            md-search-text="vm.searchSupplTypeText"
+                            md-items="item in vm.querySupplTypes(vm.searchSupplTypeText)"
+                            md-item-text="item.SupplierType_Name"
+                            placeholder="Select Business Type">
+                            <span md-highlight-text="vm.searchSupplTypeText">{{item.SupplierType_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.SupplierType_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.SupplierType_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Payment Methods</label>
+                    <md-chips ng-model="vm.selectedPaymentMethods" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedPayMethItem"
+                            md-search-text="vm.searchPayMethIText"
+                            md-items="PayMethitem in vm.queryPayMeths(vm.searchPayMethIText)"
+                            md-item-text="PayMethitem.PaymentMethod_Name"
+                            placeholder="Select Method(s)">
+                            <span md-highlight-text="vm.searchPayMethIText">{{PayMethitem.PaymentMethod_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.PaymentMethod_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.PaymentMethod_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-truck" class="chips-icon"></md-icon>
+                    <label>Ways Of Delivery</label>
+                    <md-chips ng-model="vm.selectedWaysOfDelivery" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedWayOfDelItem"
+                            md-search-text="vm.searchWayOfDelText"
+                            md-items="WayOfDelitem in vm.queryWayOfDels(vm.searchWayOfDelText)"
+                            md-item-text="WayOfDelitem.WayOfDelivary_Name"
+                            placeholder="Select Delivery">
+                            <span md-highlight-text="vm.searchWayOfDelText">{{WayOfDelitem.WayOfDelivary_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.WayOfDelivary_Name}}</strong>
+                            <em class="rxp-chip-subtitle">code: ({{$chip.WayOfDelivary_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+                <md-input-container class="md-block rxp-no-bottom-margins">
+                    <label>Time of Delivery</label>
+                    <md-icon md-font-icon="zmdi zmdi-time"></md-icon>
+                    <input type="number" step="0.01" ng-model="vm.CustomerData.Customer_TimeOfDelivery" >
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-city-alt" class="chips-icon"></md-icon>
+                    <label>Agencies</label>
+                    <md-chips
+                        ng-model="vm.selectedAgencies"
+                        md-removable="true"
+                        placeholder="Enter Agencies"
+                        delete-button-label="Remove Agency"
+                        delete-hint="Press delete to remove Agency"
+                        secondary-placeholder="+Agency">
+                    </md-chips>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="fa fa-certificate" class="chips-icon"></md-icon>
+                    <label>Certificates</label>
+                    <md-chips
+                        ng-model="vm.selectedCertificates"
+                        md-removable="true"
+                        placeholder="Enter Certificates"
+                        delete-button-label="Remove Certificate"
+                        delete-hint="Press delete to remove Certificate"
+                        secondary-placeholder="+Certificate">
+                    </md-chips>
+                </md-input-container>
+                <md-input-container class="rxp-full-width"">
+                    <md-icon md-font-icon="fa fa-diamond"></md-icon>
+                    <label class="rxp-margin-left-med">Customer's Class</label>
+                    <md-select placeholder="Pick Class" ng-model="vm.CustomerData.Customer_Class_Code">
+                        <md-select-header>
+                            <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Classes List</span>
+                        </md-select-header>
+                        <md-option ng-repeat="x in vm.classes" value="{{x.Class_Code}}">
+                            {{x.Class_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <span class="hcm-form-lable"><md-icon md-font-icon="fa fa-star-half-o"> </md-icon> Customer Rate:  <span class="md-primary">{{vm.CustomerData.Customer_Rate}}</span></span>
+                <md-slider-container class="hcm-form-control">
+                    <md-slider min="1" max="10" ng-model="vm.CustomerData.Customer_Rate" 
+                        aria-label="Rating Slider" id="rate-slider" class="md-primary">
+                    </md-slider>
+                </md-slider-container>
+                
+            </div>
+        </div>
+        <md-divider></md-divider>
+        <div layout="row" class="rxp-margin-top-xlarg" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Extra-field 1</label>
+                    <md-icon md-font-icon="fa fa-cubes"></md-icon>
+                    <textarea type="text" ng-model="vm.CustomerData.Customer_ExtraField1"></textarea>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra-field 2</label>
+                    <md-icon md-font-icon="fa fa-cubes"></md-icon>
+                    <textarea type="text" ng-model="vm.CustomerData.Customer_ExtraField2"></textarea>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra-field 3</label>
+                    <md-icon md-font-icon="fa fa-cubes"></md-icon>
+                    <textarea type="text" ng-model="vm.CustomerData.Customer_ExtraField3"></textarea>
+                </md-input-container>
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Extra-field 4</label>
+                    <md-icon md-font-icon="fa fa-cubes"></md-icon>
+                    <textarea type="text" ng-model="vm.CustomerData.Customer_ExtraField4"></textarea>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra-field 5</label>
+                    <md-icon md-font-icon="fa fa-cubes"></md-icon>
+                    <textarea type="text" ng-model="vm.CustomerData.Customer_ExtraField5"></textarea>
+                </md-input-container>
+                <md-switch class="md-primary" ng-model="vm.CustomerStatus" aria-label="Customer Status" 
+                    ng-init="switches.primary = false">
+                    <md-icon md-font-icon="fa fa-asterisk"></md-icon>Customer Status
+                </md-switch>
+            </div>
+        </div>
+        <div class="rxp-margin-top-larg">
+            <div layout="row" layout-xs="column">
+                <div  flex="50" flex-xs="50" layout="column" class="nono-left-container">
+                    <label ng-if="vm.categoryError" class="rxp-error">Please Select Categories</label>
+                    <label ng-if="vm.BusinessTypeError" class="rxp-error">Please Select Business Type</label>
+                </div>
+                <div  flex="50" flex-xs="50" layout="column">
+                    <div  class="rxp-right-container rxp-full-width">
+                        <md-button type="submit" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                            aria-label="Submit">
+                            <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                            <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+                        </md-button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </form>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>

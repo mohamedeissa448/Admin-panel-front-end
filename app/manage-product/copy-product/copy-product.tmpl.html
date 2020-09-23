@@ -1,0 +1,30 @@
+<md-content class="padded-content-page"  ng-show="!vm.isLoading">
+        <h3 class="nono-centered-container">Copy Product {{ vm.ProductData.OldName }}</h3>
+        <form name="vm.CopyProductForm" novalidate  ng-submit="vm.CopyProductForm.$valid && vm.SubmitData()">
+            <div layout="row" layout-xs="column">
+                <div  flex="45" flex-xs="100" layout="column">
+                    <md-input-container class="md-block">
+                        <label>New Product Name</label>
+                        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                        <input type="text" ng-model="vm.ProductData.Product_Name" required>
+                    </md-input-container>
+                </div>
+                <div  flex="10" flex-xs="100" layout="column">
+                </div>
+            <div class="rxp-margin-top-larg rxp-right-container">
+                <md-button type="submit" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                    aria-label="Submit">
+                    <label class="rxp-margin-left-med rxp-margin-right-med">Copy Product</label>
+                    <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+    <md-content class="rxp-finish-message" ng-show="vm.isLoading">
+        <div class="rxp-finish-message-sub">
+            <div>
+                <h3>Loading...</h3>
+                <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+            </div>
+        </div>
+    </md-content>

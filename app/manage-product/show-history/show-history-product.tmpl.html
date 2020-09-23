@@ -1,0 +1,1014 @@
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-tool-bar">
+    <h3 class="nono-centered-container">Product History</h3>
+    <md-button
+      class="md-icon-button rxp-close-popup-btt"
+      md-ripple-size="auto"
+      aria-label="Close"
+      ng-click="vm.CloseForm()"
+    >
+      <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content ng-show="!vm.isLoading" style="overflow-x: hidden">
+  <div layout="row" layout-fill>
+    <div
+      flex="20"
+      class="rxp-left-sticky-menu rxp-white-bg"
+      flex-xs="100"
+      layout="column"
+    >
+      <ul>
+        <li
+          ng-repeat="item in vm.checkedDates"
+          class="rxp-history-item"
+          ng-click="vm.ShowHistory(item)"
+        >
+          <md-icon md-font-icon="zmdi zmdi-time"></md-icon>
+          {{item | date:'dd MMMM yyyy'}}
+        </li>
+      </ul>
+    </div>
+    <div
+      flex="80"
+      flex-xs="100"
+      ng-if="vm.selectedDate"
+      layout="column"
+      class="rxp-left-sticky-menu"
+      ng-repeat="SelectedHistoryData in vm.history | filter:{Product_EditingTime:vm.selectedDate}"
+    >
+      <!-- Revision Data container -->
+      <span
+        ><md-icon md-font-icon="zmdi zmdi-time"></md-icon>Revision Info</span
+      >
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="45" layout="column">
+          <span class="history-data-title"
+            >Edited By:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.HistoryEditedUser.User_Name}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Edited On:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_EditingTime | date:'dd MMMM
+              yyyy'}}</span
+            >
+          </span>
+        </div>
+        <div flex="45" flex-xs="45" layout="column">
+          <span class="history-data-title"
+            >Approved By:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.HistoryCheckedUser.User_Name}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Approved On:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_CheckedDate | date:'dd MMMM
+              yyyy'}}</span
+            >
+          </span>
+        </div>
+      </div>
+      <md-divider class="rxp-field-divider"></md-divider>
+      <span
+        ><md-icon md-font-icon="zmdi zmdi-truck"></md-icon>Product Data</span
+      >
+      <!-- Customer Status Container -->
+      <div layout="row" layout-xs="column">
+        <div
+          flex="30"
+          flex-xs="30"
+          layout="column"
+          layout-align="center center"
+        ></div>
+        <div flex="5" flex-xs="5" layout="column"></div>
+        <div
+          flex="30"
+          flex-xs="30"
+          layout="column"
+          layout-align="center center"
+        ></div>
+        <div flex="5" flex-xs="5" layout="column"></div>
+        <div
+          flex="30"
+          flex-xs="30"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-switch
+            class="md-primary"
+            ng-model="SelectedHistoryData.Product_IsActive"
+            ng-disabled="true"
+            aria-label="Status"
+            ng-true-value="1"
+            ng-false-value="0"
+          >
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>Status
+          </md-switch>
+        </div>
+      </div>
+      <!-- Product Data Container -->
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Product Name:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Name}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Product Suffix:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Suffix}}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Chemical Name:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Chemical_Name}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Manufacturer:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Manufacturer || "Empty
+              Info"}}</span
+            >
+          </span>
+        </div>
+      </div>
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Exporter:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Exporter || "Empty Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Abbreviation:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Abbreviation || "Empty
+              Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >CAS Number:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_CAS_Number || "Empty Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Description:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Description || "Empty Info"}}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >EC Number:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_EC_Number || "Empty Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Country:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Historycountry.Country_Name || "Empty
+              Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Product Categories:
+            <span
+              class="history-data-value history-data-chips "
+              ng-repeat="x in SelectedHistoryData.Historyproductcategory"
+            >
+              {{x.ProductCategory_Name}}
+            </span>
+            <span
+              class="history-data-value"
+              ng-if="SelectedHistoryData.Historyproductcategory.length==0"
+            >
+              Empty Info
+            </span>
+          </span>
+
+          <span class="history-data-title"
+            >Assay:
+            <!-- assay is an array of strings-->
+            <span
+              class="history-data-value history-data-chips "
+              ng-repeat="x in SelectedHistoryData.Product_Assay"
+            >
+              {{x }}
+            </span>
+            <span
+              class="history-data-value"
+              ng-if="SelectedHistoryData.Product_Assay.length==0"
+            >
+              Empty Info
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <md-divider class="rxp-field-divider"></md-divider>
+      <!-- Customer Classification Data Container -->
+      <span
+        ><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Classification
+        Data</span
+      >
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Categories:
+            <span
+              class="history-data-value history-data-chips "
+              ng-repeat="category in SelectedHistoryData.HistoryCategory"
+            >
+              {{category.Category_Name}}
+            </span>
+            <span
+              class="history-data-value "
+              ng-if=" SelectedHistoryData.HistoryCategory.length ==0 "
+            >
+              Empty Info
+            </span>
+          </span>
+          <span class="history-data-title"
+            >Product Customs Release Types:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Historyproductrelease.ReleaseType_Name ||
+              "Empty Info"}}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Product Class:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Historyproductclass.Class_Name || "Empty
+              Info"}}</span
+            >
+          </span>
+        </div>
+      </div>
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Certificates:
+            <span
+              class="history-data-value history-data-chips "
+              ng-repeat="certificate in SelectedHistoryData.Historycertification"
+            >
+              {{certificate.Certificate_Name}}
+            </span>
+            <span
+              class="history-data-value"
+              ng-if="SelectedHistoryData.Historycertification.length==0"
+            >
+              Empty Info
+            </span>
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column"></div>
+      </div>
+      <md-divider class="rxp-field-divider"></md-divider>
+      <!-- Customer Appearance Data Container -->
+      <span><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Appearance</span>
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Product Form:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Historyproductform.Form_Name || "Empty
+              Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Appearance Description:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Appearance || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >MSDS:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_MSDS || "Empty Info" }}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Product Package:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Historyproductpacking.Packing_Name ||
+              "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Storage Conditions:
+            <span
+              class="history-data-value history-data-chips "
+              ng-repeat="x in SelectedHistoryData.Historyproductstrage"
+            >
+              {{x.StorageType_Name}}
+            </span>
+            <span
+              class="history-data-value"
+              ng-if="SelectedHistoryData.Historyproductstrage.length==0"
+            >
+              Empty Info
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <md-divider class="rxp-field-divider"></md-divider>
+      <!-- Product Physical Data Container -->
+      <span
+        ><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Physical Data</span
+      >
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Active Content:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Active_Content || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >PH:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_pH || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Hazen Color:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Hazen_color || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Viscosity:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Viscosity || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Heavy Metals:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Heavy_Metals || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Water Insoluble Matter:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Water_Insoluble_Matter || "Empty
+              Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Volatile Matter:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Volatile_Matter || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Foreign Matter:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Foriein_Matter || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Bolilling Point:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Boiling_Point || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Melting Point:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Melting_Point || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Loss On Drying:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Loss_On_Drying || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Solubility:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Solubility || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Absorbance:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Absorbance || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >InfraRed Absorption:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_InfraRed_Absorption || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Partical Size:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Partical_Size || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Thin Layer Chromatography:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Think_Layer_Chromatography ||
+              "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Starch Test:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Starch_Test || "Empty Info"
+              }}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Sp gravity:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Sp_gravity || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Identifications Relative Density:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Identifications_Relative_Density ||
+              "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Relative Density From:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Relative_Density_From || "Empty
+              Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Relative Density To:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Relative_Density_To || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Bulk Density From:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Bulk_Density_From || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Bulk Density to:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Bulk_Density_to || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Relative Index:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Relative_Index || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Impurities Related Substance:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Impurities_Related_Substance ||
+              "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Water Content:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Water_Content || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Weight:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Weight_Value || "Empty Info" }}
+              {{SelectedHistoryData.Historyweight[0].Weight_Name || "Empty
+              Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Concentration:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Concentration_Value || "Empty Info"
+              }}
+              {{SelectedHistoryData.Historyconcentration[0].Concentration_Name
+              || "Empty Info"}}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Water Content:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Water_Content || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Residue On Sieve:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Residue_On_Sieve || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Water Content:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Water_Content || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Residual On Solvent:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Residual_On_Solvent || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Sulfur Dioxides Residual:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Sulfur_Dioxides_Residual || "Empty
+              Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Non Volatyl Reside:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Non_Volatyl_Reside || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Specific Surface Area:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Specific_Surface_Area || "Empty
+              Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Spescific Opticical Rotation:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Spescific_Opticical_Rotation ||
+              "Empty Info" }}</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <md-divider class="rxp-field-divider"></md-divider>
+      <!-- Product Chemical Data Container -->
+      <span
+        ><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Chemical Data</span
+      >
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Molecular Formula:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Molecular_Formula || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Molecular Weight:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Molecular_Weight || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Organic Compounds:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Organic_Compounds || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Chloride:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Chloride || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Iron:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Iron || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Phosphorous Acid:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Phosphorous_Acid || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >phosphate:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_O_phosphate || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Sulphates:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Sulphates || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Arsenic:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Arsenic || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Lead:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Lead || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Mercury:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Mercury || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Cadmium:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Cadmium || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Ferrous Fe2o3:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Ferrous_Fe2o3 || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Chrome:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Chrome || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Selenium:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Selenium || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Nickel:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Nickel || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Copper:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Copper || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Oxalic Acid:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Oxalic_Acid || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Fumaric Acid:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Fumaric_Acid || "Empty Info"
+              }}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Product_Alumumium_Al2O3:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Alumumium_Al2O3 || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Titanicum Tio2:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Titanicum_Tio2 || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Free Fatty Acids:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Free_Fatty_Acids || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Peroxide Value:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Peroxide_Value || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Iodine Value:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Iodine_Value || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Acetone:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Acetone || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Methanol:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Methanol || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Hydroyl Number:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Hydroyl_Number || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Aldehyles:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Aldehyles || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Esters:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Esters || "Empty Info" }}
+            </span>
+          </span>
+          <span class="history-data-title"
+            >Chlorenated Compound:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Chlorenated_Compound || "Empty
+              Info" }}
+            </span>
+          </span>
+          <span class="history-data-title"
+            >Antimony:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Antimony || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Maliec Acid:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Maliec_Acid || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Ash:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Ash || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Protien:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Protien || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Nitrates:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Nitrates || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Aflatoxine:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Aflatoxine || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Melamine:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Melamine || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Free Halogens:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Free_Halogens || "Empty Info"
+              }}</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <md-divider class="rxp-field-divider"></md-divider>
+      <!-- Product Micorbiology Data Container -->
+      <span
+        ><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Micorbiology
+        data</span
+      >
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Remarkes:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Remarkes || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >EColi:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_EColi || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Mould:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Mould || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Escherichia Cali:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Escherichia_Cali || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Staphyloccuse Aureus:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Staphyloccuse_Aureus || "Empty
+              Info" }}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Total Plate Count:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Total_Plate_Count || "Empty Info"
+              }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Yeast:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Yeast || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Pathogenic Bacterium:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Pathogenic_Bacterium || "Empty
+              Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Salmonila:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Salmonila || "Empty Info" }}</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <md-divider class="rxp-field-divider"></md-divider>
+      <!-- Product Extra Data Container -->
+      <span><md-icon md-font-icon="zmdi zmdi-layers"></md-icon>Other Data</span>
+      <div class="rxp-padding-left-large" layout="row" layout-xs="column">
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Extra-field 1:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra1 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 2:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra2 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 3:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra3 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 4:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra4 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 5:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra5 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 6:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra6 || "Empty Info" }}</span
+            >
+          </span>
+        </div>
+        <div flex="10" flex-xs="100" layout="column"></div>
+        <div flex="45" flex-xs="100" layout="column">
+          <span class="history-data-title"
+            >Extra-field 7:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra7 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 8:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra8 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 9:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra9 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 10:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra10 || "Empty Info" }}</span
+            >
+          </span>
+          <span class="history-data-title"
+            >Extra-field 11:
+            <span class="history-data-value"
+              >{{SelectedHistoryData.Product_Extra11 || "Empty Info" }}</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <md-divider class="rxp-field-divider"></md-divider>
+    </div>
+  </div>
+</md-content>

@@ -1,0 +1,202 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h3 class="center-text">Add New Offer</h3>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.CloseSendOffer()">
+            <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+    <form name="vm.SendOfferForm" ng-submit="vm.SendOfferForm.$valid && vm.SubmitRequest()">
+        <div layout="row" layout-fill>
+            <div flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container flex="100" class="md-block">
+                    <label translate="Select Offer date"></label>
+                    <md-datepicker ng-model="vm.SendOffer.SendOffer_Create_Date" flex="100" flex-xs="100"
+                        md-placeholder="Select Offer date" class="rxp-normal-date-piker-width">
+                    </md-datepicker>
+                </md-input-container>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container md-no-float class="md-block">
+                    <label>Title</label>
+                    <md-icon md-font-icon="fa fa-comment-o"></md-icon>
+                    <input type="text" placeholder="Insert Offer Title" ng-model="vm.SendOffer.SendOffer_Title">
+                </md-input-container>
+            </div>
+        </div>
+        <md-subheader class="md-no-sticky">Select Customers</md-subheader>
+        <md-divider></md-divider>
+        <div layout="row" layout-fill>
+            <div flex="40" flex-xs="100" layout="column" layout-padding>
+                <md-radio-group class="md-primary" ng-model="vm.selectCustomerType" ng-init="vm.selectCustomerType='Customers'">
+                    <md-radio-button value="Customers">Customers</md-radio-button>
+                    <md-radio-button value="Categories">Categories</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div flex="10" flex-xs="100" layout="column" ng-if="vm.selectCustomerType == 'Customers'">
+
+            </div>
+            <div ng-if="vm.selectCustomerType == 'Customers'" flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container class="md-block md-icon-left rxp-customer-chips">
+                    <md-icon ng-click="vm.FilterCustomerByProduct()" md-font-icon="zmdi zmdi-accounts-alt md-raised rxp-customer-filter-btt"
+                        class="chips-icon"></md-icon>
+                    <label class="rxp-customer-chips-lable">Select Customers</label>
+                    <md-chips ng-model="vm.selectedCustomers" md-autocomplete-snap md-transform-chip="vm.transformChip($chip)"
+                        md-require-match="true" min-items="1" ng-required="true">
+                        <md-autocomplete md-selected-item="vm.selectedcustomeritem" md-search-text="vm.searchCustomerText"
+                            md-items="customeritem in vm.queryCustomers(vm.searchCustomerText)" md-item-text="customeritem.Customer_Name"
+                            placeholder="Customers">
+                            <span md-highlight-text="vm.searchCustomerText">{{customeritem.Customer_Name}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                                <strong>{{$chip.Customer_Name}}</strong>
+                                <em class="rxp-chip-subtitle">code: ({{$chip.Customer_Code}})</em>
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </md-input-container>
+            </div>
+            <div flex="10" flex-xs="100" layout="column" ng-if="vm.selectCustomerType == 'Categories'">
+            </div>
+            <div ng-if="vm.selectCustomerType == 'Categories'" flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+                    <label>Select Category</label>
+                    <md-select placeholder="Select Category" ng-model="vm.SendOffer.Category_ID">
+                        <md-option ng-repeat="x in vm.Categorieslist" value="{{x.Category_ID}}">
+                            {{x.Category_Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+        <md-subheader class="md-no-sticky">Product Offer</md-subheader>
+        <md-divider></md-divider>
+
+        <md-divider class="rxp-margin-top-larg"></md-divider>
+        <div layout="row" layout-xs="column" class="hcm-contact-grid-header jsgrid-header-row">
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                Product :
+            </div>
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                Amount :
+            </div>
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                Unit
+            </div>
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                Price
+            </div>
+            <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+
+            </div>
+        </div>
+        <md-divider></md-divider>
+        <span class="md-body-2 hcm-contact-no-data" ng-if="vm.Customer_Contact.length==0">No Contact Data Inserted</span>
+        <div layout="row" layout-xs="column" class="jsgrid-row" ng-repeat="productOffer in vm.requestPriceData.Product">
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                {{productOffer.Product_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                {{productOffer.Quantity_Required}}
+            </div>
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                {{productOffer.Weight_Name}}
+            </div>
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+                    <md-input-container md-no-float class="md-block hcm-contact-name-field">
+                            <label>Price</label>
+                            <md-icon md-font-icon="fa fa-money"></md-icon>
+                            <input type="number" step="0.01" ng-model="productOffer.SendOffer_Price">
+                        </md-input-container>
+            </div>
+            <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column">
+                <md-button ng-click="vm.DeleteProductoffer(Offer)" class="md-default hcm-ingrid-delete-btt" md-ripple-size="auto"
+                    aria-label="Delete Contact">
+                    <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+                </md-button>
+            </div>
+        </div>
+        <md-divider class="rxp-field-divider"></md-divider>
+        <div layout="row" layout-xs="column">
+             <div flex="50" flex-xs="100" layout="column" layout-padding>
+                <md-input-container flex="100" class="md-block">
+                    <label translate="Offer Valid Till"></label>
+                    <md-datepicker ng-model="vm.SendOffer.SendOffer_Valid_Till" flex="100" flex-xs="100" 
+                        md-placeholder="Select Valid Till" class="rxp-normal-date-piker-width">
+                    </md-datepicker>
+                </md-input-container>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                <md-input-container class="md-block rxp-control-full-width">
+                    <label>Place of Delivery</label>
+                    <md-icon md-font-icon="zmdi zmdi-truck"></md-icon>
+                    <input type="text" placeholder="ex: Our warehouse or customer warehouse " ng-model="vm.SendOffer.SendOffer_Place_of_Delivery" >
+                </md-input-container>
+            </div>
+        </div>
+        <div layout="row" layout-xs="column">
+            <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                <md-input-container class="md-block rxp-control-full-width">
+                    <label>Delivery Time</label>
+                    <md-icon md-font-icon="zmdi zmdi-time"></md-icon>
+                    <input type="text" placeholder="Insert note of delivery time" ng-model="vm.SendOffer.SendOffer_Delivery_Time" >
+                </md-input-container>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                <md-input-container class="md-block rxp-control-full-width">
+                    <label>Method of Payment</label>
+                    <md-icon md-font-icon="zmdi zmdi-money-box"></md-icon>
+                    <input type="text" placeholder="ex: Deposit, Cash, or Check (before - with - after) delivery" ng-model="vm.SendOffer.SendOffer_Method_of_Payment" >
+                </md-input-container>
+            </div>
+            
+        </div>
+        <div layout="row" layout-xs="column">
+            <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                <md-input-container class="md-block rxp-control-full-width">
+                    <label>Delivery Cost </label>
+                    <md-icon md-font-icon="zmdi zmdi-money"></md-icon>
+                    <input type="text" placeholder="insert cost if avilable" ng-model="vm.SendOffer.SendOffer_Delivery_Cost" >
+                </md-input-container>
+            </div>
+            <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                <md-input-container class="md-block rxp-control-full-width">
+                    <label>Taxes Types</label>
+                    <md-icon md-font-icon="zmdi zmdi-balance-wallet"></md-icon>
+                    <input type="text" placeholder="ex: Prices include tax, add extra 14% Vat" ng-model="vm.SendOffer.SendOffer_Taxes_Types" >
+                </md-input-container>
+            </div>
+        </div>
+        <div layout="row" layout-xs="column">
+            <div flex="50" flex-xs="100" layout="column" layout-align="center start">
+                <md-input-container class="md-block rxp-control-full-width">
+                    <label>Work Time Off</label>
+                    <md-icon md-font-icon="zmdi zmdi-calendar"></md-icon>
+                    <input type="text" placeholder="Off Days & On Days, Open 8:00AM Close 5:00PM working hours" ng-model="vm.SendOffer.SendOffer_Work_Time_Off" >
+                </md-input-container>
+            </div>
+        </div>
+        <md-dialog-actions layout="row">
+            <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+                <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+                    <md-button ng-click="vm.CloseSendOffer()" class="md-default md-raised" md-ripple-size="auto"
+                        aria-label="Close Contact Form">
+                        <md-icon md-font-icon="fa fa-times"></md-icon>
+                        <label class="rxp-margin-left-med rxp-margin-right-med">close</label>
+                    </md-button>
+                </div>
+                <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+                    <md-button type="submit" class="md-primary md-raised" md-ripple-size="auto" aria-label="Submit">
+                        <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+                        <label translate="Send Offer"></label>
+                    </md-button>
+                </div>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-content>

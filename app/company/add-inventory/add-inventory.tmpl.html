@@ -1,0 +1,55 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">add new Inventory</h3>
+    <form name="vm.addInventoryForm" novalidate  ng-submit="vm.addInventoryForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Inventory Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Inventory.Inventory_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Location</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.Inventory.Inventory_Location" required></textarea>
+        </md-input-container>
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Related To Company</label>
+            <md-select  placeholder="Related To Company"style="width:80%" ng-model="vm.Inventory.Inventory_Related_To_Company" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Companies List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.companies" value="{{x._id}}">
+                    {{x.Company_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Related To Branch</label>
+            <md-select  placeholder="Related To Branch"style="width:80%" ng-model="vm.Inventory.Inventory_Related_To_Branch" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Companies List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.branches" value="{{x._id}}">
+                    {{x.Branch_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Inventory Keeper</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Inventory.Inventory_Keeper" required>
+        </md-input-container>
+
+        
+
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

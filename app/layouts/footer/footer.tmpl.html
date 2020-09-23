@@ -1,0 +1,9 @@
+<div flex="noshrink" layout="column" layout-align="end none">
+    <md-toolbar ng-controller="AppFooterController as footer" class="nono-footer-container" md-theme="{{triSkin.elements.toolbar}}">
+        <div class="md-toolbar-tools md-body-1" layout="row" layout-align="space-between center">
+            <span>{{footer.settings.name}}</span>
+            <span hide-xs ng-bind-html="footer.settings.copyright"></span>
+            <span>v{{footer.settings.version}}</span>
+        </div>
+    </md-toolbar>
+</div>

@@ -1,0 +1,32 @@
+<div class="rxp-header-tool-box">
+  <ul class="nav navbar-nav rxp-header-tool-box-nav">
+    <div class="navbar-form search-form rxp-header-tool-search-box rxp-header-tool-select-box" id="navbar-search">
+      <mat-form-field appearance="fill" class="rxp-full-width-container">
+          <mat-label>Store</mat-label>
+          <mat-select name="SelectedStoreCode" (selectionChange)="changeStoreLocation()" [(value)]="SelectedStoreCode" required>
+          <mat-option ng-repeat="store in vm.StoreLocations" [value]="store._id">
+            {{store.StoragePlace_DisplayName}}
+          </mat-option>
+          <mat-option class="in-select-btt" [value]="0" (click)="vm.AddNewStoreLocation()">
+            <i  class="wi wi-day-sunny"></i> Add New Store Location
+          </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+  </ul>
+</div>
+<div class="rxp-data-none-table-bg">
+  <div class="row">
+    <div class="col-sm-12 rxp-centered-container">
+      <button 
+      class="btn btn-default mr-1 ogt-colored-btt" (click)="vm.AddSubLevelStoreLocation(FirstLevelTitle,SelectedStoreCode,SelectedStoreIdentifier())">
+        <i class="wi wi-day-sunny"></i>
+        <span>Add New {{ FirstLevelTitle }}</span>
+      </button>
+    </div>
+  </div>
+    <div id="jsGrid"></div>
+    <!---->
+   
+    <!---->
+</md-content>

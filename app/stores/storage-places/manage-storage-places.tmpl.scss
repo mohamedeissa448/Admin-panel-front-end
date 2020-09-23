@@ -1,0 +1,24 @@
+
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+  .rxp-header-tool-select-box{
+    margin-top: 10px;
+  }
+  .rxp-header-tool-select-box .mat-form-field-flex{
+    background-color: white !important;
+    border-style: solid;
+    border-width: 1px;
+    padding-top: 3px !important;
+    border-color: #f7f7f782;
+  }
+  .rxp-header-tool-select-box .mat-form-field-infix{
+    padding-bottom: 5px !important;
+  }

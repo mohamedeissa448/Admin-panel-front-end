@@ -1,0 +1,185 @@
+<md-content class="padded-content-page" ng-show="!vm.isLoading">
+  <md-content class="padded-content-page">
+      <form name="vm.SendOrderForm" ng-submit=" vm.SubmitRequest()">
+        
+    
+        <h3>Products Order for Customer <span style="color:green;">{{vm.Customer_Name}}</span></h3>
+        <md-divider></md-divider>
+    
+        <div
+          layout="row"
+          class="rxp-margin-top-medium hcm-contact-add-form"
+          layout-xs="column"
+        >
+          <div
+            flex="5"
+            class="rxp-icon-container"
+            flex-xs="100"
+            layout="column"
+            layout-padding
+          >
+            <md-icon md-font-icon="fa fa-dropbox"></md-icon>
+          </div>
+          <div flex="30" flex-xs="100" layout="column" class="">
+            <md-autocomplete
+              class="hcm-select-product-name-field"
+              md-items="productitem in vm.searchForproduct(vm.productsearchText)"
+              md-search-text="vm.productsearchText"
+              md-item-text="productitem.Product_Name"
+              md-selected-item="vm.selectedProduct"
+              md-no-cache="false"
+              md-floating-label="Enter Product Name"
+            >
+              <md-item-template>
+                <span md-highlight-text="vm.productsearchText"
+                  >{{productitem.Product_Name || vm.productsearchText}}</span
+                >
+              </md-item-template>
+              <md-not-found>
+                No Product matching "{{vm.productsearchText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+          </div>
+     
+          <div
+            flex="15"
+            flex-xs="100"
+            layout="column"
+            layout-align="end end"
+            class="hcm-add-product-btt-container"
+          >
+            <md-button
+              ng-click="vm.AddproductOrder()"
+              class="md-primary md-raised"
+              md-ripple-size="auto"
+              aria-label="Submit"
+            >
+              <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+              <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+            </md-button>
+          </div>
+        </div>
+        <md-divider class="rxp-margin-top-larg"></md-divider>
+        <div
+          layout="row"
+          layout-xs="column"
+          class="hcm-contact-grid-header jsgrid-header-row"
+        >
+          <div
+            class="jsgrid-header-cell"
+            flex="20"
+            flex-xs="50"
+            layout="column"
+            layout-align="center start"
+          >
+            Product :
+          </div>
+          <div
+            class="jsgrid-header-cell"
+            flex="20"
+            flex-xs="50"
+            layout="column"
+            layout-align="center start"
+          >
+            _id :
+          </div>
+        
+        </div>
+        <md-divider></md-divider>
+    
+        <div
+          layout="row"
+          layout-xs="column"
+          class="jsgrid-row"
+          ng-repeat="productOrder in vm.productOrders"
+        >
+          <div
+            class="jsgrid-cell"
+            flex="20"
+            flex-xs="50"
+            layout="column"
+            layout-align="center start"
+          >
+            {{productOrder.Order_Product_Name }}
+          </div>
+          <div
+            class="jsgrid-cell"
+            flex="20"
+            flex-xs="50"
+            layout="column"
+            layout-align="center start"
+          >
+            {{productOrder.Order_Product || "Product doesn't exist in DataBase,Please delete this row and add it again from above"}}
+          </div>
+          
+          <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" ng-show="!productOrder.Order_Product">
+            <md-button
+              ng-click="vm.DeleteRequest(productOrder)"
+              class="md-default hcm-ingrid-delete-btt"
+              md-ripple-size="auto"
+              aria-label="Delete Contact"
+            >
+              <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+            </md-button>
+          </div>
+        </div>
+        <md-divider class="rxp-field-divider"></md-divider>
+        <md-dialog-actions layout="row">
+          <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+            <div
+              flex="50"
+              flex-xs="100"
+              layout="column"
+              layout-align="center center"
+            >
+              <md-button
+                ng-click="vm.CloseUpdateOrder()"
+                class="md-default md-raised"
+                md-ripple-size="auto"
+                aria-label="Close Contact Form"
+              >
+                <md-icon md-font-icon="fa fa-times"></md-icon>
+                <label class="rxp-margin-left-med rxp-margin-right-med"
+                  >close</label
+                >
+              </md-button>
+            </div>
+            <div
+              flex="50"
+              flex-xs="100"
+              layout="column"
+              layout-align="center center"
+            >
+              <md-button
+                type="submit"
+                class="md-primary md-raised"
+                md-ripple-size="auto"
+                aria-label="Submit"
+              >
+                <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+                <label translate="Update Order"></label>
+              </md-button>
+            </div>
+          </div>
+        </md-dialog-actions>
+      </form>
+    </md-content>
+    
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+  <div class="rxp-finish-message-sub">
+    <div>
+      <h3>Loading...</h3>
+      <md-progress-linear
+        class="margin-bottom-20"
+        md-mode="indeterminate"
+      ></md-progress-linear>
+    </div>
+  </div>
+</md-content>
+<style>
+  md-dialog {
+    width: 99%;
+    max-width: 99%;
+  }
+</style>

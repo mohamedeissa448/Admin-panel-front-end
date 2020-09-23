@@ -1,0 +1,56 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <h3 class="nono-centered-container">Edit Allowed Supplier for {{vm.UserData.User_Name}}</h3>
+        <md-button class="md-icon-button rxp-close-popup-btt" md-ripple-size="auto" 
+            aria-label="Close" ng-click="vm.ConfirmCloseDialog()">
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page" ng-if="!vm.isLoading">
+    <form name="vm.allowedSupplierForm" novalidate  ng-submit="vm.allowedSupplierForm.$valid && vm.SubmitData()">
+        <md-switch class="md-primary" ng-model="vm.UserData.User_Access_All_Suppliers" aria-label="Supplier Status" 
+            ng-init="switches.primary=false" ng-change="vm.AllowedAllSupplierChanged()">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>User Can Access All Suppliers
+        </md-switch>
+        <br>
+        <md-input-container ng-if="!vm.UserData.User_Access_All_Suppliers" class="md-block md-icon-left">
+            <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+            <label>Allowed Suppliers *</label>
+            <md-chips ng-model="vm.selectedSuplliers" md-autocomplete-snap
+                    md-transform-chip="vm.transformChip($chip)"
+                    md-require-match="true" min-items="1">
+                <md-autocomplete
+                    md-selected-item="vm.selectedSupplierItem"
+                    md-search-text="vm.searchSupplierText"
+                    md-items="supplieritem in vm.querySupplier(vm.searchSupplierText)"
+                    md-item-text="supplieritem.Supplier_Name"
+                    placeholder="Allowed Suppliers">
+                    <span md-highlight-text="vm.searchCatText">{{supplieritem.Supplier_Name}}</span>
+                </md-autocomplete>
+                <md-chip-template>
+                    <span>
+                    <strong>{{$chip.Supplier_Name}}</strong>
+                    <em class="rxp-chip-subtitle">code: ({{$chip.Supplier_Code}})</em>
+                    </span>
+                </md-chip-template>
+            </md-chips>
+        </md-input-container>
+        <p ng-if="vm.supplierError" class="rxp-error">Please select one or more suppliers(s)</p>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>

@@ -1,0 +1,795 @@
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-toolbar">
+    <h3 class="center-text">Add New Sale</h3>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="vm.CloseSale()">
+      <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+  <form name="vm.SendOrderForm" ng-submit=" vm.SubmitSelling()">
+    <div layout="row" layout-fill>
+      <div flex="50" flex-xs="100" layout="column" layout-padding>
+        <md-input-container flex="100" class="md-block">
+          <label translate="Select selling date"></label>
+          <md-datepicker
+            ng-model="vm.ProductSelling.Product_Selling_Date"
+            flex="100"
+            flex-xs="100"
+            md-placeholder="Select selling date"
+            class="rxp-normal-date-piker-width"
+          >
+          </md-datepicker>
+        </md-input-container>
+      </div>
+       <!-- start select products-->
+       <div flex="55" flex-xs="100" layout="column" layout-padding>
+        <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+          <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+          <label class="rxp-supplier-chips-lable">Select Product from store</label>
+          <md-chips ng-model="vm.selectedProducts" md-autocomplete-snap
+                  md-transform-chip="vm.transformChip($chip)"
+                  md-require-match="true" min-items="1" ng-required="true"
+                  md-max-chips="1">
+              <md-autocomplete
+                  md-selected-item="vm.selectedProductItem"
+                  md-search-text="vm.searchProductText"
+                  md-items="productitem in vm.queryProducts(vm.searchProductText)"
+                  md-item-text="productitem.Product_Name"
+                  placeholder="Product">
+                  <span md-highlight-text="vm.searchProductText">{{productitem.Product_Name}}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                  <span>
+                  <strong>{{$chip.Product_Name}}</strong>
+                  <em class="rxp-chip-subtitle">code: ({{$chip.Product_Code}})</em>
+                  </span>
+              </md-chip-template>
+          </md-chips>
+      </md-input-container>
+      </div>
+      <!-- end select products-->
+      <!-- start select suppliers-->
+      <div flex="55" flex-xs="100" layout="column" layout-padding>
+        <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+          <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+          <label class="rxp-supplier-chips-lable">Supplier Name</label>
+          <input type="text" ng-model="vm.selectedProducts[0].purchasing.Supplier_Name"disabled required>
+      </md-input-container>
+      <md-input-container class="md-block md-icon-left rxp-supplier-chips" >
+        <md-icon ng-click="vm.FilterSupplierByProduct()" md-font-icon="fa fa-truck md-raised rxp-supplier-filter-btt" class="chips-icon"></md-icon>
+        <label class="rxp-supplier-chips-lable">Supplier Code</label>
+        <input type="text" ng-model="vm.selectedProducts[0].purchasing.Supplier_Code"disabled required>
+    </md-input-container>
+      </div>
+      <!-- end select suppliers-->
+     
+    </div>
+    <!--start select customer to sell to -->
+    <div flex="40" flex-xs="100" layout="column" class="">
+      <md-input-container class="md-block md-icon-left">
+          <md-icon md-font-icon="zmdi zmdi-accounts-alt" class="chips-icon"></md-icon>
+          <label>Select Customer</label>
+          <md-chips ng-model="vm.selectedCustomers" md-autocomplete-snap
+                  md-transform-chip="vm.transformChip($chip)"
+                  md-require-match="true" min-items="1" ng-required="true" md-max-chips="1">
+              <md-autocomplete
+                  md-selected-item="vm.selectedCustomerItem"
+                  md-search-text="vm.searchCustomerText"
+                  md-items="customeritem in vm.queryCustomers(vm.searchCustomerText)"
+                  md-item-text="customeritem.Customer_Name"
+                  placeholder="Customer">
+                  <span md-highlight-text="vm.searchCustomerText">{{customeritem.Customer_Name}}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                  <span>
+                  <strong>{{$chip.Customer_Name}}</strong>
+                  <em class="rxp-chip-subtitle">code: ({{$chip.Customer_Code}})</em>
+                  </span>
+              </md-chip-template>
+          </md-chips>
+      </md-input-container>
+  </div>
+    <!--end select customer-->
+    <div layout="row" layout-xs="column">
+      <div  flex="45" flex-xs="100" layout="column">
+
+        <md-input-container class="md-block">
+          <label>Manufacturer Name</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input type="text" ng-model="vm.selectedProducts[0].purchasing.Product_Manufacturer_Name"disabled required>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>Manufacturer Code</label>
+        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+        <input type="text" ng-model="vm.selectedProducts[0].purchasing.Product_Manufacturer_Code"disabled>
+      </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Batch Number</label>
+            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+            <input type="text" ng-model="vm.selectedProducts[0].purchasing.Product_BatchNumber"disabled>
+        </md-input-container>
+      <md-input-container class="rxp-full-width" style="margin-top: 2em;">
+        <label>Expiration Date</label>
+        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+        <input  ng-model="vm.selectedProducts[0].purchasing.Product_Date_Of_Expiration| date:'dd MMMM yyyy'" style="width:80%" disabled>
+
+    </md-input-container>
+          <md-input-container
+          md-no-float
+          class="md-block hcm-Amount-number-field"
+        >
+          <label>Weight Of Package</label>
+          <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+          <input type="number" step="1" ng-model="vm.ProductSelling.Product_Package_Weight" required/>
+        </md-input-container>
+      </div>
+      <div  flex="10" flex-xs="100" layout="column">
+      </div>
+      <div  flex="45" flex-xs="100" layout="column">
+          <md-input-container class="rxp-full-width"">
+              <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+              <label class="rxp-margin-left-med">Country Of Origin</label>
+              <md-select placeholder="Country Of Origin"style="width:80%" ng-model="vm.selectedProducts[0].purchasing.Product_Origin_Country_Code" disabled>
+                  <md-select-header>
+                      <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Countries List</span>
+                  </md-select-header>
+                  <md-option ng-repeat="x in vm.countries" value="{{x.Country_Code}}">
+                      {{x.Country_Name}}
+                  </md-option>
+              </md-select>
+          </md-input-container>
+          
+          <md-input-container class="rxp-full-width" style="margin-top: 3em;">
+            <label>Production Date</label>
+            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+            <input  ng-model="vm.selectedProducts[0].purchasing.Product_Date_Of_Production| date:'dd MMMM yyyy'" style="width:80%" disabled>
+          </md-input-container>
+
+          <md-input-container class="rxp-full-width">
+            <md-icon
+            md-font-icon="fa fa-balance-scale"
+            class="chips-icon"
+          ></md-icon>
+          <label>Select Unit</label>
+          <md-select placeholder="Select Unit" ng-model="vm.ProductSelling.Product_Weight_Unit_Code"style="width:80%">
+            <md-option
+              ng-repeat="RequestWeight in vm.WeightUnitsList"
+              ng-value="{{RequestWeight.Weight_Code}}"
+            >
+              {{RequestWeight.Weight_Name}}
+            </md-option>
+          </md-select>
+          </md-input-container>
+          
+          <md-input-container class="md-block" style="margin-top: 4em;">
+              <label>Number Of Packages</label>
+              <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+              <input type="number" step="1" ng-model="vm.ProductSelling.Product_Number_Of_Packages" style="width:80%"required>
+          </md-input-container>
+
+          <md-input-container class="md-block" style="margin-top: 4em;">
+            <label>Quantity</label>
+            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+            <input type="number" step="0.01" ng-model="vm.ProductSelling.Product_Number_Of_Packages * vm.ProductSelling.Product_Package_Weight" style="width:80%"disabled>
+        </md-input-container>
+
+      </div>
+  </div>
+
+    <md-subheader class="md-no-sticky">Bill</md-subheader>
+    <md-divider></md-divider>
+
+    <div layout="row" layout-xs="column">
+      <div  flex="45" flex-xs="100" layout="column" layout-align="center center">               
+          <md-switch class="md-primary" ng-model="vm.ProductSelling.Product_OutGoing_Bill_Is_taxed" aria-label="Product Status" 
+              ng-init="vm.ProductSelling.Product_OutGoing_Bill_Is_taxed = true">
+              <md-icon md-font-icon="zmdi zmdi-truck"></md-icon>Is Bill Taxed
+          </md-switch>
+      </div>
+     
+  </div>
+
+  <md-divider></md-divider>
+
+  <div layout="row" layout-xs="column">
+    <div  flex="45" flex-xs="100" layout="column">
+        <md-input-container class="md-block">
+            <label>Bill Number</label>
+            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+            <input type="text" ng-model="vm.ProductSelling.Product_OutGoing_Bill_Number" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>HighChem Customer's Permission Of Delivering Number</label>
+          <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+          <input type="text" ng-model="vm.ProductSelling.Product_OutGoing_Customer_Permission_Number"required>
+        </md-input-container>
+       
+     </div>
+  </div>  
+
+    <md-divider class="rxp-field-divider"></md-divider>
+    <!-- start tabs --> 
+    <md-tabs class="rxp-product-tabs" md-dynamic-height md-border-bottom>
+      <md-tab label="Prices">
+          <md-tab-label><md-icon md-font-icon="zmdi zmdi-invert-colors"></md-icon> Prices</md-tab-label>
+          <md-tab-body>
+              <div layout="row" layout-xs="column">
+                  <div  flex="45" flex-xs="100" layout="column">
+                    <md-input-container ng-if="vm.selectTaxesType=='other'" class="md-block" >
+                      <label>Enter Taxes :</label>
+                      <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                      <input type="number" step="1" ng-model="vm.Other_Amount_Of_Taxes" style="width:80%">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" >
+                      <label>Price Of Unit Before Taxes</label>
+                      <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                      <input type="number" step="1"  ng-model="vm.ProductSelling.Price_Of_Unit_Before_Taxes" style="width:80%"required>
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block" >
+                      <label>Total Price Before Taxes</label>
+                      <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                      <input type="number" step="1" 
+                      ng-value="vm.ProductSelling.Product_Number_Of_Packages * vm.ProductSelling.Product_Package_Weight * vm.ProductSelling.Price_Of_Unit_Before_Taxes" 
+                      ng-model="vm.ProductSelling.Total_Price_Before_Taxes" style="width:80%"disabled>
+                    </md-input-container>
+                    <md-input-container class="md-block" >
+                      <label>Total Price After Taxes</label>
+                      <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                      <input type="number" step="1" 
+                      
+                      ng-model="vm.ProductSelling.Total_Price_After_Taxes" style="width:80%"disabled>
+                      <md-button
+                      class="md-primary md-default rxp-filter-alphabet"
+                      aria-label="Calculate"
+                      ng-click="vm.calcTotalPriceAfterTaxes()"
+                    >
+                      Calc
+                   </md-button>
+                    </md-input-container>
+                    
+                   
+                  </div>
+                  <div  flex="10" flex-xs="100" layout="column">
+                  </div>
+                  <div  flex="45" flex-xs="100" layout="column">
+                        <div class="row">
+                          <div
+                            flex="100"
+                            flex-xs="100"
+                            layout="row"
+                            class="rxp-search-by-radio-selection"
+                          >
+                            Taxes :
+                            <md-radio-group
+                              class="md-primary"
+                              ng-model="vm.selectTaxesType"
+                              ng-init="vm.selectTaxesType=14"
+                            >
+                              <md-radio-button value="14"> 14%</md-radio-button>
+                              <md-radio-button value="exempt"> exempt</md-radio-button>
+                              <md-radio-button value="without"> without</md-radio-button>
+                              <md-radio-button value="other"> other</md-radio-button>
+                            </md-radio-group>
+                          </div>
+                        </div>
+
+                        <div  flex="45" flex-xs="100" layout="column">
+                          <md-input-container class="md-block" style="margin-top: 4em;">
+                            <label>Taxes Value</label>
+                            <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                            <input type="number" step="0.0001" 
+                            ng-value="vm.ProductSelling.Product_Number_Of_Packages * vm.ProductSelling.Product_Package_Weight * vm.ProductSelling.Price_Of_Unit_Before_Taxes * vm.selectTaxesType * 0.01" 
+                            ng-model="vm.ProductSelling.Taxes_Value" style="width:80%"disabled>
+                          </md-input-container>
+                        </div>
+                     
+                  </div>
+              </div>
+          </md-tab-body>
+      </md-tab>
+      <md-tab label="Payment Methods">
+          <md-tab-label><md-icon md-font-icon="zmdi zmdi-toys"></md-icon> Payment Methods</md-tab-label>
+          <md-tab-body>
+              <div layout="row" layout-xs="column">
+                  <div  flex="45" flex-xs="100" layout="column">
+                    <div class="row">
+                      <div
+                        flex="100"
+                        flex-xs="100"
+                        layout="row"
+                        class="rxp-search-by-radio-selection"
+                      >
+                        Payment Method :
+                        <md-radio-group
+                          class="md-primary"
+                          ng-model="vm.Payment_Method_Name"
+                          ng-init="vm.Payment_Method_Name='cash'"
+                        >
+                          <md-radio-button value="cash"> cash</md-radio-button>
+                          <md-radio-button value="cheque"> cheque</md-radio-button>
+                        </md-radio-group>
+                      </div>
+                      <!---->
+                      <md-input-container class="md-block" >
+                        <label>You Still have to Get Paid:</label>
+                        <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                        <input type="number" step="0.0001" 
+                        ng-model="vm.Still_Have_To_Get_Paid " style="width:80%"disabled> 
+                                                                     
+                   </md-input-container>
+                   <!---->
+                    </div>
+                    </div>
+                    </div>
+                    <!--start Cash -->
+                    <div ng-if="vm.Payment_Method_Name == 'cash' ">
+        <div>
+          <div
+    layout="row"
+    class="rxp-margin-top-medium hcm-contact-add-form"
+    layout-xs="column"
+    style="height: 35px;"
+    >
+    <div flex="35" flex-xs="100" layout="column" class=""style="margin-top: 2em;">
+      <md-input-container flex="100" class="md-block" style="position: relative; bottom: 3em;"title="Select Paying date">
+        <md-datepicker
+          ng-model="vm.Cash_Paying_Date"
+          flex="100"
+          flex-xs="100"
+          md-placeholder="Select Paying date"
+          class="rxp-normal-date-piker-width"
+        >
+        </md-datepicker>
+      </md-input-container>    
+    </div>
+
+    <div flex="25" flex-xs="100" layout="column" class="">
+      <md-input-container
+      md-no-float
+      class="md-block hcm-Amount-number-field"
+      title="Amount Of Paying"
+      style="position: relative;bottom:2em"
+      >
+      <label>Amount Of Paying</label>
+      <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+      <input type="number" ng-model="vm.Cash_Amount_Of_Paying" />
+      </md-input-container>
+      </div>
+
+   
+
+    <div
+    flex="15"
+    flex-xs="100"
+    layout="column"
+    layout-align="end end"
+    class="hcm-add-product-btt-container"
+    style="position: relative;bottom: 3em;"
+    >
+    <md-button
+    ng-click="vm.AddCash_Payment()"
+    class="md-primary md-raised"
+    md-ripple-size="auto"
+    aria-label="Submit"
+    style="position: relative;top:6em"
+    >
+    <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+    <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+    </md-button>
+    </div>
+    </div>
+
+    <md-divider class="rxp-margin-top-larg"></md-divider>
+    <div
+    layout="row"
+    layout-xs="column"
+    class="hcm-contact-grid-header jsgrid-header-row"
+    style="bottom: 0em;position:relative"
+    >
+    <div
+    class="jsgrid-header-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+    >
+    Paying Date :
+    </div>
+    <div
+    class="jsgrid-header-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+    >
+    Amount Of Paying :
+    </div>
+    <div
+    class="jsgrid-header-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+    >
+   Days From Selling To Be Paid :
+    </div>
+  
+    </div>
+    <md-divider></md-divider>
+    </div>
+    <md-divider></md-divider>
+
+    <div
+    layout="row"
+    layout-xs="column"
+    class="jsgrid-row"
+    ng-repeat="cashPayment in vm.cashPayments"
+    >
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{cashPayment.Paying_Date | date:'dd MMMM yyyy'}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{cashPayment.Amount_Of_Paying}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{cashPayment.Number_Of_Days_From_Selling_To_Be_Paid}}
+    </div>
+  
+    <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column">
+      <md-button
+        ng-click="vm.DeleteCashPayment(cashPayment)"
+        class="md-default hcm-ingrid-delete-btt"
+        md-ripple-size="auto"
+        aria-label="Delete Payment"
+      >
+        <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+      </md-button>
+    </div>
+    </div>
+</div>
+      
+      <!--end  Cash-->
+
+      <!--start Cheque -->
+      <div ng-if="vm.Payment_Method_Name == 'cheque' ">
+        <div style="">
+          <div
+    layout="row"
+    class="rxp-margin-top-medium hcm-contact-add-form"
+    layout-xs="column"
+    style="height: 35px;"
+    >
+    <div flex="35" flex-xs="100" layout="column" class=""style="margin-top: 2em;">
+      <md-input-container flex="100" class="md-block" style="position: relative; bottom: 3em;"title="Select Cheque date">
+        <md-datepicker
+          ng-model="vm.Cheque_Date"
+          flex="100"
+          flex-xs="100"
+          md-placeholder="Select Cheque date"
+          class="rxp-normal-date-piker-width"
+        >
+        </md-datepicker>
+      </md-input-container>    
+    </div>
+
+    <div flex="25" flex-xs="100" layout="column" class="">
+      <md-input-container
+      md-no-float
+      class="md-block hcm-Amount-number-field"
+      title="Amount Of Paying"
+      style= "position: relative;bottom:2em"
+      >
+      <label>Amount Of Paying</label>
+      <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+      <input type="number" ng-model="vm.Cheque_Amount_Of_Paying" />
+      </md-input-container>
+      </div>
+    
+
+    <div
+    flex="15"
+    flex-xs="100"
+    layout="column"
+    layout-align="end end"
+    class="hcm-add-product-btt-container"
+    style="position: relative;bottom: 3em;"
+    >
+    <md-button
+    ng-click="vm.AddCheque_Payment()"
+    class="md-primary md-raised"
+    md-ripple-size="auto"
+    aria-label="Submit"
+    style="position: relative;top:6em"
+    >
+    <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+    <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+    </md-button>
+    </div>
+    </div>
+
+    <md-divider class="rxp-margin-top-larg"></md-divider>
+    <div
+    layout="row"
+    layout-xs="column"
+    class="hcm-contact-grid-header jsgrid-header-row"
+    style="bottom: 0em;position:relative"
+    >
+    <div
+    class="jsgrid-header-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+    >
+    Cheque Date :
+    </div>
+    <div
+    class="jsgrid-header-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+    >
+    Amount Of Paying :
+    </div>
+    <div
+    class="jsgrid-header-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+    >
+    Days From Selling To Be Paid  :
+    </div>
+    
+    </div>
+    <md-divider></md-divider>
+    </div>
+    <md-divider></md-divider>
+
+    <div style=""
+    layout="row"
+    layout-xs="column"
+    class="jsgrid-row"
+    ng-repeat="chequePayment in vm.chequePayments"
+    >
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Cheque_Date | date:'dd MMMM yyyy'}}
+    </div>
+    <div
+    class="jsgrid-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+  >
+    {{chequePayment.Amount_Of_Paying}}
+  </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Number_Of_Days_From_Selling_To_Be_Paid}}
+    </div>
+  <!--  <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Supplier_Recieving_Cheque_Number}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.HigChem_Safe_Keeper_Name}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Supplier_Reciever_Info.Name}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Supplier_Reciever_Info.Address}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Supplier_Reciever_Info.ID_Number}}
+    </div>
+    <div
+      class="jsgrid-cell"
+      flex="20"
+      flex-xs="50"
+      layout="column"
+      layout-align="center start"
+    >
+      {{chequePayment.Supplier_Reciever_Info.Position}}
+    </div>
+    <div
+    class="jsgrid-cell"
+    flex="20"
+    flex-xs="50"
+    layout="column"
+    layout-align="center start"
+  >
+    {{chequePayment.Cheque_Details.Bank_Name}}
+  </div>
+  <div
+  class="jsgrid-cell"
+  flex="20"
+  flex-xs="50"
+  layout="column"
+  layout-align="center start"
+>
+  {{chequePayment.Cheque_Details.Bank_Branch}}
+</div>
+<div
+class="jsgrid-cell"
+flex="20"
+flex-xs="50"
+layout="column"
+layout-align="center start"
+>
+{{chequePayment.Cheque_Details.Cheque_Number}}
+</div>
+-->
+
+    <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column">
+      <md-button
+        ng-click="vm.DeleteChequePayment(chequePayment)"
+        class="md-default hcm-ingrid-delete-btt"
+        md-ripple-size="auto"
+        aria-label="Delete Payment"
+      >
+        <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+      </md-button>
+    </div>
+    </div>
+</div>
+      </md-tab-body>
+      </md-tab>
+      <!--end Cheque-->
+      <md-tab label="Extra Data">
+        <md-tab-label><md-icon md-font-icon="zmdi zmdi-flare"></md-icon> Extra Data</md-tab-label>
+        <md-tab-body>
+          <div layout="row" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Extra field 1</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductSelling.Extra1" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra field 2</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductSelling.Extra2" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra field 5</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductSelling.Extra5" >
+                </md-input-container>
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <label>Extra field 3</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductSelling.Extra3" >
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Extra field 4</label>
+                    <md-icon md-font-icon="zmdi zmdi-account"></md-icon>
+                    <input type="text" ng-model="vm.ProductSelling.Extra4" >
+                </md-input-container>
+            </div>
+        </div>
+        </md-tab-body>
+    
+    </md-tab>
+    <md-tab label="">
+      <md-tab-body>
+          
+      </md-tab-body>
+  
+  </md-tab>           
+      
+     
+      
+      
+  </md-tabs>
+
+    <!--end tabs-->
+    <md-dialog-actions layout="row">
+      <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-button
+            ng-click="vm.CloseSale()"
+            class="md-default md-raised"
+            md-ripple-size="auto"
+            aria-label="Close Purchasing Form"
+          >
+            <md-icon md-font-icon="fa fa-times"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med"
+              >close</label
+            >
+          </md-button>
+        </div>
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+        >
+          <md-button
+            type="submit"
+            class="md-primary md-raised"
+            md-ripple-size="auto"
+            aria-label="Submit"
+          >
+            <md-icon md-font-icon="zmdi zmdi-email"></md-icon>
+            <label translate="Submit"></label>
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-content>

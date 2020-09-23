@@ -1,0 +1,53 @@
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-tool-bar">
+    <h3 class="nono-centered-container">
+      Data Quality Check for Product: {{vm.ProductName}}
+    </h3>
+    <md-button
+      class="md-icon-button rxp-close-popup-btt"
+      md-ripple-size="auto"
+      aria-label="Close"
+      ng-click="vm.CloseForm()"
+    >
+      <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content class="padded-content-page" ng-if="!vm.isLoading">
+  <textarea rows="4" ng-model="vm.declineComment"style="display: block; margin: auto;width: 60%;"></textarea>
+  <div class="rxp-margin-top-larg nono-centered-container">
+    <md-button
+      ng-click="vm.ApproveData()"
+      class="md-primary md-raised"
+      md-ripple-size="auto"
+      aria-label="Submit"
+    >
+      <md-icon md-font-icon="zmdi zmdi-check"></md-icon>
+      <label class="rxp-margin-left-med rxp-margin-right-med"
+        >Data Checked Accurately</label
+      >
+    </md-button>
+    <md-button
+      ng-click="vm.DeclineData()"
+      class="md-primary md-raised"
+      md-ripple-size="auto"
+      aria-label="Submit"
+    >
+      <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+      <label class="rxp-margin-left-med rxp-margin-right-med"
+        >Decline</label
+      >
+    </md-button>
+  </div>
+</md-content>
+<md-content class="rxp-finish-message" ng-if="vm.isLoading">
+  <div class="rxp-finish-message-sub">
+    <div>
+      <h3>Loading...</h3>
+      <md-progress-linear
+        class="margin-bottom-20"
+        md-mode="indeterminate"
+      ></md-progress-linear>
+    </div>
+  </div>
+</md-content>

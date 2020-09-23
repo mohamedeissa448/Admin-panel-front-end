@@ -1,0 +1,26 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">Edit Country</h3>
+    <form name="vm.editCountryForm" novalidate  ng-submit="vm.editCountryForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Country Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Country.Country_Name" required>
+        </md-input-container>
+        <!-- <md-input-container class="md-block">
+            <label>Country Abbreviation Letter</label>
+            <md-icon md-font-icon="fa fa-flag"></md-icon>
+            <input type="text" ng-model="vm.Country.Country_Tcode"></input>
+        </md-input-container> -->
+        <md-switch class="md-primary" ng-model="vm.Country_IsActive" aria-label="Country Status" 
+            ng-init="switches.primary = false">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>Country Status
+        </md-switch>
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

@@ -1,0 +1,27 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+  <h3 class="page-header center-text">{{ vm.DialogTitle }}</h3>
+  <form name="vm.addStoreLocationForm" novalidate  ng-submit="vm.addStoreLocationForm.$valid && vm.SubmitData()">
+      <md-input-container class="md-block">
+          <label>Store Location Identifier</label>
+          <md-icon md-font-icon="fa fa-book"></md-icon>
+          <input type="text" ng-model="vm.StoreLocationData.StoragePlace_Identifier" required>
+      </md-input-container>
+      <md-input-container class="md-block">
+              <label>Display Name</label>
+              <md-icon md-font-icon="fa fa-bars"></md-icon>
+              <textarea type="text" ng-model="vm.StoreLocationData.StoragePlace_DisplayName"required></textarea>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>Sub Level Name (if found)</label>
+        <md-icon md-font-icon="fa fa-bars"></md-icon>
+        <textarea type="text" ng-model="vm.StoreLocationData.StoragePlace_SubLevelTitle"></textarea>
+</md-input-container>
+      <div class="rxp-margin-top-larg rxp-right-container">
+          <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+              aria-label="Submit" title="Add Storage Place">
+              <label class="rxp-margin-left-med rxp-margin-right-med">Add Storage Place</label>
+              <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+          </md-button>
+      </div>
+  </form>
+</md-content>

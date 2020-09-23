@@ -1,0 +1,154 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h3 class="center-text">Contact List For {{vm.Customer_Name}}</h3>
+    </div>
+</md-toolbar>
+  
+<md-content class="padded-content-page" ng-show="!vm.isLoading">
+    <form  name="vm.AddContactform" ng-submit="vm.AddContactform.$valid && vm.AddContact()" layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <div flex="15" flex-xs="50" layout="column" class="">
+            <md-input-container md-no-float class="md-block hcm-contact-tilte-field">
+                <label>Title</label>
+                <md-icon md-font-icon="fa fa-circle-o"></md-icon>
+                <input type="text" ng-model="vm.Customer_ContactTitle" name="Customer_ContactTitle" required>
+                <div ng-messages="vm.AddContactform.Customer_ContactTitle.$error" role="alert">
+                    <div ng-message="required">This is required.</div>
+                  </div>               
+            </md-input-container>
+        </div>
+        <div flex="20" flex-xs="100" layout="column" class="">
+            <md-input-container md-no-float class="md-block hcm-contact-name-field">
+                <label>Name</label>
+                <md-icon md-font-icon="zmdi zmdi-assignment-account"></md-icon>
+                <input type="text" ng-model="vm.Customer_ContactName">
+            </md-input-container>
+        </div>
+        <div flex="25" flex-xs="100" layout="column" class="">
+            <md-input-container class="md-block md-icon-left">
+                <md-icon md-font-icon="zmdi zmdi-phone" class="chips-icon"></md-icon>
+                <label>Phone(s)</label>
+                <md-chips
+                    ng-model="vm.Customer_ContactTelphone"
+                    md-removable="true"
+                    placeholder="Enter Phone(s)"
+                    delete-button-label="Remove Phone"
+                    delete-hint="Press delete to remove Phone"
+                    secondary-placeholder="+Phone">
+                </md-chips>
+            </md-input-container>
+        </div>
+        <div flex="25" flex-xs="100" layout="column" class="">
+            <md-input-container class="md-block md-icon-left">
+                <md-icon md-font-icon="zmdi zmdi-email" class="chips-icon"></md-icon>
+                <label>E-mail Address(s)</label>
+                <md-chips
+                    ng-model="vm.Customer_ContactEmail"
+                    md-removable="true"
+                    placeholder="Enter E-mail(s)"
+                    delete-button-label="Remove E-mail"
+                    delete-hint="Press delete to remove E-mail"
+                    secondary-placeholder="+E-mail">
+                </md-chips>
+            </md-input-container>
+        </div>
+        <div flex="15" flex-xs="100" layout="column" layout-align="end end" class="hcm-add-contact-btt-container">
+            <md-button  type="submit" ng-if="!vm.ItemUnderEdit" class="md-primary md-raised" md-ripple-size="auto" 
+                aria-label="Submit">
+                <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+            </md-button>
+            <md-button type="submit" ng-if="vm.ItemUnderEdit" class="md-primary md-raised" md-ripple-size="auto" 
+                aria-label="Submit">
+                <md-icon md-font-icon="zmdi zmdi-floppy"></md-icon>
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+            </md-button>
+        </div>
+    </form>
+    <md-divider class="rxp-margin-top-larg"></md-divider>
+    <div layout="row" layout-xs="column" class="hcm-contact-grid-header jsgrid-header-row">
+        <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+            Title:
+        </div>
+        <div class="jsgrid-header-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+            Name:
+        </div>
+        <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+            Phone(s)
+        </div>
+        <div class="jsgrid-header-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+            E-Mail(s)
+        </div>
+        <div class="jsgrid-header-cell" flex="5" flex-xs="50" layout="column" layout-align="center start">
+            
+        </div>
+        <div class="jsgrid-header-cell" flex="5" flex-xs="50" layout="column" layout-align="center start">
+            
+        </div>
+    </div>
+    <md-divider></md-divider>
+    <span class="md-body-2 hcm-contact-no-data" ng-if="vm.Customer_Contact.length==0">No Contact Data Inserted</span>
+    <div layout="row" layout-xs="column" class="jsgrid-row" ng-repeat="contact in vm.Customer_Contact" >
+        <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column" layout-align="center start">
+            {{contact.Customer_ContactTitle}}
+        </div>
+        <div class="jsgrid-cell" flex="30" flex-xs="50" layout="column" layout-align="center start">
+            {{contact.Customer_ContactName}}
+        </div>
+        <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column">
+            <span ng-repeat="phone in contact.Customer_ContactTelphone" class="rxp-contact-chips">
+                {{phone}}
+            </span>
+        </div>
+        <div class="jsgrid-cell" flex="20" flex-xs="50" layout="column">
+            <span ng-repeat="email in contact.Customer_ContactEmail" class="rxp-contact-chips">
+                {{email}}
+            </span>
+        </div>
+        <div class="jsgrid-cell" flex="5" flex-xs="50" layout="column" >
+            <md-button ng-click="vm.DeleteContact(contact)" class="md-default hcm-ingrid-delete-btt" md-ripple-size="auto" 
+                aria-label="Delete Contact">
+                <md-icon md-font-icon="zmdi zmdi-delete"></md-icon>
+            </md-button>
+        </div>
+        <div class="jsgrid-cell" flex="5" flex-xs="50" layout="column" >
+            <md-button ng-click="vm.editContact(contact)" class="md-default hcm-ingrid-delete-btt" md-ripple-size="auto" 
+                aria-label="edit Contact">
+                <md-icon md-font-icon="zmdi zmdi-edit"></md-icon>
+            </md-button>
+        </div>
+    </div>
+</md-content>
+
+<md-dialog-actions layout="row" ng-show="!vm.isLoading">
+    <div layout="row" layout-xs="column" class="rxp-control-full-width nono-centered-container">
+        <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+            <md-button ng-click="vm.CloseContact()" class="md-default md-raised" md-ripple-size="auto" 
+                aria-label="Close Contact Form">
+                <md-icon md-font-icon="fa fa-times"></md-icon>
+                <label class="rxp-margin-left-med rxp-margin-right-med">close</label>
+            </md-button>
+        </div>
+        <div flex="50" flex-xs="100" layout="column" layout-align="center center">
+            <md-button ng-click="vm.SaveContact()" class="md-primary md-raised" md-ripple-size="auto" 
+                aria-label="Save Contact">
+                <md-icon md-font-icon="fa fa-floppy-o"></md-icon>
+                <label class="rxp-margin-left-med rxp-margin-right-med">Save</label>
+            </md-button>
+        </div>
+        
+    </div>
+</md-dialog-actions>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>
+<style>
+    md-dialog{
+        width: 99%;
+        max-width: 99%;
+    }
+</style>

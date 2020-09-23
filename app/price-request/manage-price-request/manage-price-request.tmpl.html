@@ -1,0 +1,45 @@
+<md-content class="padded-content-page">
+        <div layout="row" class="rxp-margin-top-medium" layout-xs="column">
+            <div flex="75" flex-xs="100" layout="column">
+                <form ng-submit="vm.SubmitSearch()" class="autocompletesearchform">
+                    <div layout="row" class="rxp-margin-top-medium" layout-xs="column">
+                        <div flex="5" flex-xs="100" layout="column">                            
+                            <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+                        </div>
+                    <div flex="75" flex-xs="100" layout="column">
+                        <md-autocomplete 
+                            md-items="items in vm.searchForCustomer(vm.searchText)" 
+                            md-search-text="vm.searchText"
+                            md-item-text="items.Customer_Name"   
+                            md-selected-item="vm.selectedCustomer"
+                            md-no-cache="false"
+                            md-floating-label="Enter Customer Name">
+                            <md-item-template>
+                                <span md-highlight-text="vm.searchText">{{items.Customer_Name}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No customer matching "{{vm.searchText}}" were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                    </div>
+                    <div flex="20" flex-xs="100" layout="column">
+                        <md-button type="submit" class="md-primary md-raised rxp-search-btt rxp-no-margin-btt" md-ripple-size="auto" 
+                            aria-label="Submit">
+                            <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div flex="25" flex-xs="100" layout="column">
+                <div class="rxp-right-container">
+                    <md-button ng-click="vm.showAddRequest()" class="md-primary md-raised rxp-search-btt rxp-no-margin-btt" md-ripple-size="auto" 
+                        aria-label="Submit">
+                        <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                        <md-icon md-font-icon="zmdi zmdi-collection-plus"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <div id="jsGrid"></div>
+    </md-content>

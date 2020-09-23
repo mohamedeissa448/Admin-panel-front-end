@@ -1,0 +1,60 @@
+<md-content class="padded-content-page">
+    <form ng-submit="vmr.SubmitSearch()" layout="row" class="rxp-margin-top-medium" layout-xs="column">
+        <div flex="5" flex-xs="100" layout="column">
+            <md-icon md-font-icon="fa fa-dropbox"></md-icon>
+        </div>
+        <div flex="75" flex-xs="100" layout="column">
+            <md-autocomplete
+                md-items="productitem in vmr.searchForproduct(vmr.productsearchText)" 
+                md-search-text="vmr.productsearchText"
+                md-item-text="productitem.Product_Name"   
+                md-selected-item="vmr.selectedProduct"
+                md-no-cache="false"
+                md-floating-label="Enter Product Name">
+                <md-item-template>
+                    <span md-highlight-text="vmr.productsearchText">{{productitem.Product_Name}}</span>
+                </md-item-template>
+                <md-not-found>
+                    No Product matching "{{vmr.productsearchText}}" were found.
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div flex="20" flex-xs="100" layout="column">
+            <md-button type="submit" class="md-primary md-raised rxp-search-supplier-by-product-btt" md-ripple-size="auto" 
+                aria-label="Submit">
+                <md-icon md-font-icon="zmdi zmdi-search"></md-icon>
+            </md-button>
+        </div>
+    </form>
+    <div layout="row" layout-xs="column" class="rxp-header-supplier-select" ng-if="vmr.Supplierslist.length >0">
+        <div flex="85" flex-xs="100" layout="column">
+            Supplier Name
+        </div>
+        <div flex="15" class="rpx-select-all-container" flex-xs="100" layout="column">
+            <md-checkbox aria-label="Select All"
+                ng-checked="vmr.isChecked()"
+                md-indeterminate="vmr.isIndeterminate()"
+                ng-click="vmr.toggleAll()">
+                <span ng-if="vmr.isChecked()">Un-</span><span>Select All</span>
+            </md-checkbox>
+            
+        </div>
+    </div>
+    <div layout="row" layout-xs="column" class="rxp-select-supplier-row" ng-repeat="supplier in vmr.Supplierslist">
+        <div flex="95" flex-xs="100" layout="column">
+            {{ supplier.Supplier_Name }}
+        </div>
+        <div flex="5" flex-xs="100" layout="column">
+            <md-checkbox  ng-checked="vmr.exists(supplier, vmr.selected)" ng-click="vmr.toggle(supplier, vmr.selected)"
+                class="md-secondary" ng-model="supplier.selected">
+            </md-checkbox>
+        </div>
+    </div>
+    <div class="nono-centered-container">
+        <md-button ng-click="vmr.submitSelectSupplier()" class="md-primary md-raised rxp-search-supplier-by-product-btt" md-ripple-size="auto" 
+            aria-label="Return to request price form">
+            <md-icon md-font-icon="fa fa-arrow-down"></md-icon>
+        </md-button>
+    </div>
+    
+</md-content>

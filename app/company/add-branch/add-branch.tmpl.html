@@ -1,0 +1,58 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">add new Branch</h3>
+    <form name="vm.addBranchForm" novalidate  ng-submit="vm.addBranchForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Branch Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Branch.Branch_Name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Location</label>
+            <md-icon md-font-icon="fa fa-bars"></md-icon>
+            <textarea type="text" ng-model="vm.Branch.Branch_Location" required></textarea>
+        </md-input-container>
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Related To Company</label>
+            <md-select  placeholder="Related To Company"style="width:80%" ng-model="vm.Branch.Branch_Related_To_Company" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Companies List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.companies" value="{{x._id}}">
+                    {{x.Company_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="rxp-full-width"">
+            <md-icon md-font-icon="zmdi zmdi-flag"></md-icon>
+            <label class="rxp-margin-left-med">Type Of Business</label>
+            <md-select  placeholder="Type of business"style="width:80%" ng-model="vm.Branch.Branch_Type_Of_Business" ng-change="vm.updateProductSuffix()">
+                <md-select-header>
+                    <span class="rxp-margin-left-med rxp-disabled-lable rxp-inselect-lable">Types List</span>
+                </md-select-header>
+                <md-option ng-repeat="x in vm.typesOfBusiness" value="{{x._id}}">
+                    {{x.Type_Of_Business_Name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Branch Accountant</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Branch.Branch_Accountant" required>
+        </md-input-container>
+
+        <md-switch class="md-primary" ng-model="vm.Branch.Branch_Has_Inventories" aria-label="Has Inventory" 
+            ng-init="switches.primary = false">
+            <md-icon md-font-icon="fa fa-asterisk"></md-icon>Branch Has One Inventory Or more ?
+        </md-switch>
+
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

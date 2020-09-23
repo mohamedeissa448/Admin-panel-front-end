@@ -1,0 +1,215 @@
+<md-toolbar>
+  <div class="md-toolbar-tools rxp-dialog-toolbar">
+    <h3 class="center-text">  Details For Return Bill Code {{ vm.BillReturn_Code }}</h3>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="vm.CloseSupplierBill()">
+      <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content class="padded-content-page">
+  <form name="vm.IncreaseInventoryForm" ng-submit=" vm.SubmitRequest()">
+    <div layout="row" layout-fill>
+      <div flex="45" flex-xs="45" layout="column">
+        <span class="history-data-title"
+          >Inserted Date :
+          <span class="history-data-value"
+            >{{ vm.BillReturn_Date | date:'dd MMMM yyyy' }}</span
+          >
+        </span>
+        <span class="history-data-title"
+          >System Date :
+          <span class="history-data-value"
+            >{{ vm.BillReturn_SysDate | date:'dd MMMM yyyy' }}</span
+          >
+        </span>
+        <span class="history-data-title"
+          >Done By :
+          <span class="history-data-value"
+            >{{ vm.BillReturn_DoneBy_User.User_Name }}</span
+          >
+        </span>
+      </div>
+     
+      <div flex="45" flex-xs="45" layout="column">
+        <span class="history-data-title"
+          >Supplier:
+          <span class="history-data-value"
+            >{{ vm.Bill_Supplier.Supplier_Name }}</span
+          >
+        </span>
+        <span class="history-data-title"
+          >Note:
+          <span class="history-data-value"
+            >{{ vm.BillReturn_Note }}</span
+          >
+        </span>
+       
+      </div>
+
+    </div>
+
+    <md-subheader class="md-no-sticky">Products</md-subheader>
+    <md-divider></md-divider>
+
+   
+    <md-divider class="rxp-margin-top-larg"></md-divider>
+    <div
+      layout="row"
+      layout-xs="column"
+      class="hcm-contact-grid-header jsgrid-header-row"
+    >
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Product :
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Origin Variant :
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Expiration Date
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Quantity
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Cost
+      </div>
+      <div
+        class="jsgrid-header-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        Price
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div
+      layout="row"
+      layout-xs="column"
+      class="jsgrid-row"
+      ng-repeat="billProduct in vm.BillReturn_Products"
+    >
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{billProduct.Product.Product_Name}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{ billProduct.Origin_Variant.ProductOrigin_Name }}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{billProduct.Expiration_Variant | date:'dd MMMM yyyy'}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{billProduct.Quantity}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{billProduct.Cost}}
+      </div>
+      <div
+        class="jsgrid-cell"
+        flex="20"
+        flex-xs="50"
+        layout="column"
+        layout-align="center start"
+      >
+        {{billProduct.Price}}
+      </div>
+
+    </div>
+    <md-divider class="rxp-field-divider"></md-divider>
+    <!-- start bill prices-->
+    <div layout="row" layout-fill style="height: 100px;">
+      <div flex="30" flex-xs="100" layout="column" layout-padding style="text-align: center;">
+        Total BT <span style="color: blue;">{{ vm.Bill_TotalAmount }} </span> L.E
+      </div>
+      
+    </div>
+
+    <!-- end bill prices-->
+    <md-dialog-actions layout="row">
+      <div flex="100" flex-xs="100" layout="row" layout-xs="column">
+        <div
+          flex="50"
+          flex-xs="100"
+          layout="column"
+          layout-align="center center"
+          style="margin: auto;"
+        >
+          <md-button
+            ng-click="vm.CloseSupplierBill()"
+            class="md-default md-raised"
+            md-ripple-size="auto"
+            aria-label="Close Supplier Bill Details Form"
+          >
+            <md-icon md-font-icon="fa fa-times"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med"
+              >close</label
+            >
+          </md-button>
+        </div>
+
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-content>

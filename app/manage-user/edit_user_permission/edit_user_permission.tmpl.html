@@ -1,0 +1,19 @@
+<md-content class="padded-content-page">
+    <md-list>
+        <div ng-repeat="group in ::vm.GroupedPermissionsOpjectList">
+            <md-subheader class="md-primary rxp-permission-group-header" >{{group.PermissionCategoryName}}</md-subheader>
+            <md-list-item ng-repeat="permission in ::group.PermissionSubList" layout="row" layout-align="space-around center">
+                <p class="rxp-permission-title">{{permission.PermissionDisplayName}}</p>
+                <md-switch class="md-primary" ng-model="permission.IsEnabled"></md-switch>
+            </md-list-item>
+            <md-divider></md-divider>
+        </div>
+    </md-list>
+    <div class="rxp-margin-top-larg rxp-centered-container">
+        <md-button ng-click="vm.SavePermissionData()" class="md-primary md-raised rxp-btt-main" md-ripple-size="auto" 
+            aria-label="ripple auto">
+            <md-icon md-font-icon="zmdi zmdi-account-add"></md-icon>
+            <label class="rxp-margin-left-med rxp-margin-right-med">Save Permissions</label>
+        </md-button>
+    </div>
+</md-content>

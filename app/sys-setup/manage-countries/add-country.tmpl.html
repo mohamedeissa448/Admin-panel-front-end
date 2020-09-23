@@ -1,0 +1,22 @@
+<md-content class="padded-content-page rxp-toast-setup-small-content" >
+    <h3 class="page-header center-text">add new Country</h3>
+    <form name="vm.addCountryForm" novalidate  ng-submit="vm.addCountryForm.$valid && vm.SubmitData()">
+        <md-input-container class="md-block">
+            <label>Country Name</label>
+            <md-icon md-font-icon="fa fa-book"></md-icon>
+            <input type="text" ng-model="vm.Country.Country_Name" required>
+        </md-input-container>
+        <!-- <md-input-container class="md-block">
+            <label>Country Abbreviation Letter</label>
+            <md-icon md-font-icon="fa fa-flag"></md-icon>
+            <input type="text" ng-model="vm.Country.Country_Tcode"></input>
+        </md-input-container> -->
+        <div class="rxp-margin-top-larg rxp-right-container">
+            <md-button type="submit" ng-show="!vm.isLoading" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                aria-label="Submit">
+                <label class="rxp-margin-left-med rxp-margin-right-med">Add</label>
+                <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+            </md-button>
+        </div>
+    </form>
+</md-content>

@@ -1,0 +1,238 @@
+<md-toolbar>
+    <div class="md-toolbar-tools rxp-dialog-tool-bar">
+        <md-button class="md-icon-button rxp-close-popup-btt" md-ripple-size="auto" 
+            aria-label="Close" ng-click="vm.CloseForm()">
+            <md-icon md-font-icon="zmdi zmdi-close-circle"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="padded-content-page"  ng-show="!vm.isLoading">
+    <form name="vm.AddPayment" novalidate  >
+        
+        <div  flex="45" flex-xs="100" layout="column">
+            <div class="row">
+              <div
+                flex="100"
+                flex-xs="100"
+                layout="row"
+                class="rxp-search-by-radio-selection"
+              >
+                Payment Method :
+                <md-radio-group
+                  class="md-primary"
+                  ng-model="vm.Payment_Method_Name"
+                  ng-init="vm.Payment_Method_Name='cash'"
+                >
+                  <md-radio-button value="cash"> cash</md-radio-button>
+                  <md-radio-button value="cheque"> cheque</md-radio-button>
+                </md-radio-group>
+              </div>
+            </div>
+        </div>
+        <div ng-if="vm.Payment_Method_Name == 'cash' ">
+        <div layout="row" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column">
+                <span style="color:blue">Total Paid Price</span> : {{ vm.Total_All_Purchasings_Payments_Prices }}
+                <span style="color:blue"> Bill Price After Taxes</span> : {{vm.Total_All_Purchasings_Prices_After_Taxes }}
+
+                 <!-- start Bill Numbers-->
+                 <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Bills Numbers</label>
+                    <md-chips id="ClassificationsChips" ng-model="vm.selectedBill" md-autocomplete-snap
+                            md-transform-chip="vm.transformChip($chip)"
+                            md-require-match="true" min-items="1" md-max-chips="1" ng-required="true">
+                        <md-autocomplete
+                            md-selected-item="vm.selectedBillItem"
+                            md-search-text="vm.searchBillText"
+                            md-items="Billitem in vm.queryBills(vm.searchBillText)"
+                            md-item-text="Billitem.Product_Incoming_Bill_Number"
+                            placeholder="Bill(s)">
+                            <span md-highlight-text="vm.searchBillText">{{Billitem.Product_Incoming_Bill_Number}}</span>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                            <strong>{{$chip.Product_Incoming_Bill_Number}}</strong>
+                            </span>
+                        </md-chip-template>
+                       
+                    </md-chips>
+                    <md-button
+                      class="md-primary md-default rxp-filter-alphabet"
+                      aria-label="Calculate"
+                      ng-click="vm.calcBillTotalPrices()"
+                    >
+                      Calc
+                   </md-button>
+                </md-input-container>
+                <!-- end Bill Numbers-->
+                <md-input-container class="md-block">
+                    <md-datepicker
+                      ng-model="vm.Cash_Paying_Date"
+                      flex="100"
+                      flex-xs="100"
+                      md-placeholder="Select Paying date"
+                      class="rxp-normal-date-piker-width"
+                    >
+                   </md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>HigChem Delivering Cash Number</label>
+                    <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+                    <input type="text" ng-model="vm.Cash_HigChem_Delivering_Cash_Number" />
+                </md-input-container>
+                <md-input-container md-no-float class="md-block">
+                    <label>HigChem Safe Keeper Name</label>
+                    <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+                    <input type="text" ng-model="vm.Cash_HigChem_Safe_Keeper_Name" />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Supplier Reciever Address</label>
+                    <md-icon md-font-icon="zmdi zmdi-pin"></md-icon>
+                    <input type="text" ng-model="vm.Cash_Address" />
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Supplier Reciever Position</label>
+                    <md-icon md-font-icon="zmdi zmdi-map"></md-icon>
+                    <input type="text" ng-model="vm.Cash_Position" />
+                </md-input-container>
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+                    <label>Amount Of Paying</label>
+                    <input type="number" ng-model="vm.Cash_Amount_Of_Paying" name="Cash_Amount_Of_Paying" required/>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Supplier Recieving Cash Number</label>
+                    <input type="text" ng-model="vm.Cash_Supplier_Recieving_Cash_Number" />
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Supplier Reciever Name</label>
+                    <input type="text" ng-model="vm.Cash_Name" />
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <label>Supplier Reciever ID</label>
+                    <md-icon md-font-icon="zmdi zmdi-traffic" class="chips-icon"></md-icon>
+                    <input type="text" ng-model="vm.Cash_ID_Number" />
+                </md-input-container>
+                </md-input-container>
+                
+                <div>
+                    
+                </div>
+            </div>
+        </div>
+    
+    
+    </div>
+    <div ng-if="vm.Payment_Method_Name == 'cheque' ">
+        <div layout="row" layout-xs="column">
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block">
+                    <md-datepicker
+                    ng-model="vm.Cheque_Date"
+                    flex="100"
+                    flex-xs="100"
+                    md-placeholder="Select Cheque date"
+                    class="rxp-normal-date-piker-width"
+                  >
+                  </md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+                    <label>HigChem Delivering Cheque Number</label>
+                    <input type="text" ng-model="vm.Cheque_HigChem_Delivering_Cheque_Number" />
+                </md-input-container>
+                <md-input-container md-no-float class="md-block">
+                    <md-icon md-font-icon="fa fa-list-ol"></md-icon>
+                    <label>HigChem Safe Keeper Name</label>
+                    <input type="text" ng-model="vm.Cheque_HigChem_Safe_Keeper_Name" />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <md-icon md-font-icon="zmdi zmdi-pin"></md-icon>
+                    <label>Supplier Reciever Address</label>
+                    <input type="text" ng-model="vm.Cheque_Address" />
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <md-icon md-font-icon="zmdi zmdi-map"></md-icon>
+                    <label>Supplier Reciever Position</label>
+                    <input type="text" ng-model="vm.Cheque_Position" />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <md-icon md-font-icon="zmdi zmdi-city-alt"></md-icon>
+                    <label>Bank Branch</label>
+                    <input type="text" ng-model="vm.Bank_Branch" />
+                </md-input-container>
+               
+            </div>
+            <div  flex="10" flex-xs="100" layout="column">
+            </div>
+            <div  flex="45" flex-xs="100" layout="column">
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-widgets" class="chips-icon"></md-icon>
+                    <label>Amount Of Paying</label>
+                    <input type="number" ng-model="vm.Cheque_Amount_Of_Paying" name="Cheque_Amount_Of_Paying" required/>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Supplier Recieving Cheque Number</label>
+                    <input type="text" ng-model="vm.Cheque_Supplier_Recieving_Cheque_Number" />
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Supplier Reciever Name</label>
+                    <input type="text" ng-model="vm.Cheque_Name" />
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-traffic" class="chips-icon"></md-icon>
+                    <label>Supplier Reciever ID</label>
+                    <input type="text" ng-model="vm.Cheque_ID_Number" />          
+                </md-input-container>
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-money-box" class="chips-icon"></md-icon>
+                    <label>Bank Name</label>
+                    <input type="text" ng-model="vm.Bank_Name" />
+                </md-input-container>
+                <md-input-container class="md-block md-icon-left">
+                    <md-icon md-font-icon="zmdi zmdi-truck" class="chips-icon"></md-icon>
+                    <label>Cheque Number</label>
+                    <input type="text" ng-model="vm.Cheque_Number" />
+                </md-input-container>
+                
+                <div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="rxp-margin-top-larg">
+        <div layout="row" layout-xs="column">
+            <div  flex="50" flex-xs="50" layout="column">
+                <div  class="rxp-right-container rxp-full-width">
+                    <md-button ng-click=" vm.SubmitData()" type="submit" class="md-primary md-raised rxp-btt-secondary" md-ripple-size="auto" 
+                        aria-label="Submit">
+                        <label class="rxp-margin-left-med rxp-margin-right-med">Submit</label>
+                        <md-icon md-font-icon="zmdi zmdi-forward"></md-icon>
+                    </md-button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    </form>
+</md-content>
+<md-content class="rxp-finish-message" ng-show="vm.isLoading">
+    <div class="rxp-finish-message-sub">
+        <div>
+            <h3>Loading...</h3>
+            <md-progress-linear class="margin-bottom-20" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>
